@@ -5,62 +5,23 @@
     xmlns:local="using:kag_tools"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Windows10FallCreatorsUpdate="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    SizeChanged="Page_SizeChanged">
-
-    <Grid x:Name="main_grid">
-        <Grid x:Name="main_topbar" Height="40" VerticalAlignment="Top">
-            <AppBarButton x:Name="split_switch" Width="40" Click="Split_switch_Click">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-        </Grid>
-        <SplitView x:Name="main_split">
-            <SplitView.Pane>
-                <Grid>
-                    <Rectangle x:Name="acrylic_show"/>
-                    <ListView x:Name="main_nav" SelectionChanged="Main_nav_SelectionChanged">
-                        <ListViewItem>
-                            <ListViewItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon Glyph="&#xE734;"/>
-                                    <TextBlock Padding="20,0,0,0" Text="开始"/>
-                                </StackPanel>
-                            </ListViewItem.Content>
-                        </ListViewItem>
-                        <ListViewItem>
-                            <ListViewItem.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon Glyph="&#xE70F;"/>
-                                    <TextBlock Padding="20,0,0,0" Text="文本编辑"/>
-                                </StackPanel>
-                            </ListViewItem.Content>
-                        </ListViewItem>
-                    </ListView>
-                    <CommandBar VerticalAlignment="Bottom" DefaultLabelPosition="Right" Background="{x:Null}">
-                        <AppBarButton Label="设置">
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE713;"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                        <AppBarButton Label="关于">
-                            <AppBarButton.Icon>
-                                <FontIcon Glyph="&#xE946;"/>
-                            </AppBarButton.Icon>
-                        </AppBarButton>
-                    </CommandBar>
-                </Grid>
-            </SplitView.Pane>
-            <SplitView.Content>
-                <Grid>
-                    <Rectangle x:Name="acrylic_show2" Visibility="Collapsed"/>
-                    <Frame x:Name="main_frame">
-
-                    </Frame>
-                </Grid>
-            </SplitView.Content>
-        </SplitView>
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    <!--{ThemeResource ApplicationPageBackgroundThemeBrush}-->
+    
+    <Grid>
+        <Windows10FallCreatorsUpdate:NavigationView x:Name="main_nav" SelectionChanged="Main_nav_SelectionChanged" IsBackButtonVisible="Collapsed">
+            <Windows10FallCreatorsUpdate:NavigationView.MenuItemTemplate>
+                <Windows10FallCreatorsUpdate:DataTemplate>
+                    <Windows10FallCreatorsUpdate:NavigationViewItem Content="{Binding nav_name}">
+                        <Windows10FallCreatorsUpdate:NavigationViewItem.Icon>
+                            <Windows10FallCreatorsUpdate:FontIcon Glyph="{Binding nav_glyph}"/>
+                        </Windows10FallCreatorsUpdate:NavigationViewItem.Icon>
+                    </Windows10FallCreatorsUpdate:NavigationViewItem>
+                </Windows10FallCreatorsUpdate:DataTemplate>
+            </Windows10FallCreatorsUpdate:NavigationView.MenuItemTemplate>
+            <Frame x:Name="main_frame"/>
+        </Windows10FallCreatorsUpdate:NavigationView>
     </Grid>
 </Page>

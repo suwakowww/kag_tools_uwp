@@ -10,20 +10,20 @@
     >
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"-->
     <Grid>
-        <CommandBar DefaultLabelPosition="Right">
+        <CommandBar x:Name="top_cmdbar" DefaultLabelPosition="Right">
             <AppBarButton Label="打开工程 (*.ksprj)">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE8E5;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="导入文本 (*.ks)">
-                <AppBarButton.Icon>
-                    <FontIcon Glyph="&#xE8B5;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
             <AppBarButton Label="保存工程 (*.ksprj)">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE74E;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="导入文本 (*.ks)">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE896;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton Label="导出文本 (*.ks)">
@@ -37,8 +37,152 @@
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
-        <Grid Margin="0,40,0,0">
-            <TextBlock x:Name="page_size" Text="1"/>
+        <Grid x:Name="large_view" Margin="4,48,4,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="48"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--文件信息区-->
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <ScrollViewer>
+                        <StackPanel Margin="4,0">
+                            <TextBlock Text="文件名："/>
+                            <TextBlock x:Name="file_info"/>
+                            <TextBlock Text="日期："/>
+                            <TextBlock x:Name="scene_date"/>
+                            <TextBlock Text="位置："/>
+                            <TextBlock x:Name="scene_place"/>
+                            <TextBlock Text="附近的脚本："/>
+                            <TextBlock x:Name="scene_scripts"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <!--翻译显示区-->
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <ListView>
+                        <ListViewItem Content="当前字符串无词典"/>
+                    </ListView>
+                </Grid>
+
+                <!--原文显示区-->
+                <Grid Grid.Row="1" Grid.Column="0" Margin="0,4">
+                    <TextBox x:Name="text_src" IsReadOnly="True" PlaceholderText="原文......" Margin="4,0"/>
+                </Grid>
+
+                <!--译文显示区-->
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,4">
+                    <TextBox x:Name="text_dst" IsReadOnly="True" PlaceholderText="译文......" Margin="4,0"/>
+                </Grid>
+
+                <!--底部 Commandbar-->
+                <CommandBar x:Name="bot_cmdbar" Grid.Row="2" Grid.ColumnSpan="2" DefaultLabelPosition="Right" Background="{x:Null}" VerticalAlignment="Bottom">
+                    <CommandBar.Content>
+                        <TextBlock x:Name="win_page_size" Padding="0,8,0,8"/>
+                    </CommandBar.Content>
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton x:Name="bot_p_p" Label="上一个">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72B;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="bot_p_n" Label="下一个">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72A;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="bot_p_r" Label="重置">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72C;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+
+            </Grid>
+            <Grid Grid.Column="1">
+                <ListView x:Name="text_list">
+                    <ListViewItem>未加载文件</ListViewItem>
+                </ListView>
+            </Grid>
+        </Grid>
+        <Grid x:Name="small_view" Margin="4,48,4,0">
+            <!--底部 Commandbar2-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="76"/>
+                    <RowDefinition Height="48"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Pivot>
+                        <PivotItem Header="内容">
+                            <ScrollViewer>
+                                <StackPanel>
+                                    <TextBlock Text="文件名："/>
+                                    <TextBlock/>
+                                    <TextBlock Text="日期："/>
+                                    <TextBlock/>
+                                    <TextBlock Text="位置："/>
+                                    <TextBlock/>
+                                    <TextBlock Text="附近的脚本："/>
+                                    <TextBlock/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </PivotItem>
+                        <PivotItem Header="词典">
+                            <ListView>
+                                <ListViewItem Content="当前字符串无词典"/>
+                            </ListView>
+                        </PivotItem>
+                        <PivotItem Header="列表">
+                            <ListView x:Name="text_list2">
+                                <ListViewItem>未加载文件</ListViewItem>
+                            </ListView>
+                        </PivotItem>
+                    </Pivot>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <StackPanel>
+                        <TextBox Margin="0,4" PlaceholderText="原文......"/>
+                        <TextBox Margin="0,4" PlaceholderText="译文......"/>
+                    </StackPanel>
+                </Grid>
+                <CommandBar Grid.Row="2" x:Name="bot_cmdbar2" DefaultLabelPosition="Right" Background="{x:Null}" VerticalAlignment="Bottom">
+                    <CommandBar.Content>
+                        <TextBlock x:Name="win_page_size2" Padding="0,8,0,8"/>
+                    </CommandBar.Content>
+                    <CommandBar.PrimaryCommands>
+                        <AppBarButton x:Name="bot_p_p2" Label="上一个">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72B;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="bot_p_n2" Label="下一个">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72A;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="bot_p_r2" Label="重置">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE72C;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.PrimaryCommands>
+                </CommandBar>
+            </Grid>
+
         </Grid>
     </Grid>
 </Page>

@@ -66,7 +66,13 @@ namespace kag_tools
                     // ナビゲーション スタックが復元されない場合は、最初のページに移動します。
                     // このとき、必要な情報をナビゲーション パラメーターとして渡して、新しいページを
                     // 作成します
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+
+                    ulong v = ulong.Parse(Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
+                    ulong v3 = (v & 0x00000000FFFF0000L) >> 16;
+                    if (v3 >= 16299)
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    else
+                        rootFrame.Navigate(typeof(MainPage_legacy), e.Arguments);
                 }
                 // 現在のウィンドウがアクティブであることを確認します
                 Window.Current.Activate();
