@@ -21,7 +21,7 @@
                     <FontIcon Glyph="&#xE74E;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="导入文本 (*.ks)">
+            <AppBarButton x:Name="import_ks" Label="导入文本 (*.ks)" Click="Import_ks_Click">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE896;"/>
                 </AppBarButton.Icon>

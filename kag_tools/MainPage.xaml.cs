@@ -1,4 +1,5 @@
 ﻿using kag_tools.inc;
+using kag_tools_shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,7 @@ namespace kag_tools
         {
             if (args.IsSettingsSelected != true)
             {
-                string item_name = ((kag_tools.inc.nav_item)sender.SelectedItem).nav_name;
+                string item_name = ((kag_tools_shared.nav_item)sender.SelectedItem).nav_name;
                 Type target = null;
                 for (int i = 0; i < nav_items.Count; i++)
                 {
