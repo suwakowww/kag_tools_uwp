@@ -55,8 +55,8 @@ namespace kag_tools_shared
                 else if (tmp.StartsWith(";"))
                 {
                     texttypes = 'n';
-                    tmp_cl = Colors.DarkGreen;
-                    tmp_cd = Colors.LightGreen;
+                    tmp_cl = Colors.LightGreen;
+                    tmp_cd = Colors.Green;
                 }
 
                 //空行
@@ -65,6 +65,14 @@ namespace kag_tools_shared
                     texttypes = 'e';
                     tmp_cl = Colors.LightGray;
                     tmp_cd = Colors.DarkGray;
+                }
+
+                //对话
+                else if (tmp.StartsWith("【") && tmp.EndsWith("】"))
+                {
+                    texttypes = 's';
+                    tmp_cl = Colors.DeepPink;
+                    tmp_cd = Colors.HotPink;
                 }
 
                 //以上皆非，则为文本
