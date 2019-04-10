@@ -38,6 +38,8 @@ namespace kag_tools.cdlg
         {
             string cpe;
             string previewtext;
+
+            //手动选择字符编码
             switch(codepage.SelectedIndex)
             {
                 case 1:
@@ -66,6 +68,8 @@ namespace kag_tools.cdlg
                         break;
                     }
             }
+
+            //预览显示效果
             if (src != null)
             {
                 previewtext = parse_bytes.byte2str(src, cpe);
@@ -75,6 +79,11 @@ namespace kag_tools.cdlg
             }
         }
 
+        /// <summary>
+        /// 只截取前面 20 行内容，防止内容过多导致卡顿
+        /// </summary>
+        /// <param name="originaltext">文本内容</param>
+        /// <returns>截取后的内容</returns>
         private string shrinktext(string originaltext)
         {
             string shrinktext = "";

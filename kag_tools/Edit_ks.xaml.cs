@@ -176,6 +176,16 @@ namespace kag_tools
                 //还原二进制为文本
                 src2 = parse_bytes.byte2str(src, encoding);
 
+                //按行拆分文本
+                List<perlines> perline=parse_perline.parsestr(src2);
+                for (int i=0;i<perline.Count;i++)
+                {
+                    
+                    //根据每行内容，进行上色
+                    perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                }
+                text_list.ItemsSource = perline;
+                text_list2.ItemsSource = perline;
             }
         }
     }

@@ -113,6 +113,11 @@
             </Grid>
             <Grid Grid.Column="1">
                 <ListView x:Name="text_list">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Foreground="{Binding textcolor}" Text="{Binding texts}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                     <ListViewItem>未加载文件</ListViewItem>
                 </ListView>
             </Grid>
@@ -148,7 +153,11 @@
                         </PivotItem>
                         <PivotItem Header="列表">
                             <ListView x:Name="text_list2">
-                                <ListViewItem>未加载文件</ListViewItem>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Foreground="{Binding textcolor}" Text="{Binding texts}"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
                             </ListView>
                         </PivotItem>
                     </Pivot>
