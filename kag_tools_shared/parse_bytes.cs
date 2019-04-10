@@ -113,7 +113,6 @@ namespace kag_tools_shared
         /// <returns>代码页</returns>
         private static Encoding GetEncoding(string encoding)
         {
-            encoding = "gbk";
             switch(encoding)
             {
                 case "gbk":

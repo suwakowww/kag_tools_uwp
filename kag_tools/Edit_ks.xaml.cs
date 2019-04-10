@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using kag_tools_shared;
+using kag_tools.cdlg;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -159,13 +160,17 @@ namespace kag_tools
                 //判断 ANSI 编码
                 if (encoding == "ansi")
                 {
-                    ContentDialog cdlg = new ContentDialog()
-                    {
-                        Title = "检测到 ANSI 编码",
-                        Content = "暂时无法解析 ANSI 编码。",
-                        PrimaryButtonText = "关闭"
-                    };
-                    await cdlg.ShowAsync();
+                    //ContentDialog cdlg = new ContentDialog()
+                    //{
+                    //    Title = "检测到 ANSI 编码",
+                    //    Content = "暂时无法解析 ANSI 编码。",
+                    //    PrimaryButtonText = "关闭"
+                    //};
+                    //await cdlg.ShowAsync();
+                    ansitake ansitake_dlg = new ansitake();
+                    ansitake_dlg.src = src;
+                    await ansitake_dlg.ShowAsync();
+                    encoding = ansitake_dlg.cp;
                 }
 
                 //还原二进制为文本

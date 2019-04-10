@@ -1,0 +1,31 @@
+﻿<ContentDialog
+    x:Class="kag_tools.cdlg.ansitake"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:kag_tools.cdlg"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="ANSI 编码选择"
+    PrimaryButtonText="继续"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="由于历史遗留问题，各地区都针对 ANSI 编码进行了调整，以尽可能正常显示地区内使用到的字符。" TextWrapping="Wrap"/>
+            <TextBlock Text="但也因此，也造成了后期出现了“乱码”现象。" TextWrapping="Wrap"/>
+            <TextBlock Text="（简单来说，A 地区的用户使用 A 地区的应用则正常显示，但假如 B 地区的用户需要针对 A 地区的应用做本地化时，看到的却不是预期的内容。）" TextWrapping="Wrap"/>
+            <TextBlock Text="请在这里选择字符编码：" TextWrapping="Wrap"/>
+            <ComboBox x:Name="codepage" SelectedIndex="0" Margin="0,4" SelectionChanged="Codepage_SelectionChanged">
+                <ComboBoxItem Content="请选择"/>
+                <ComboBoxItem Content="GB 2312 / GBK / GB 18030"/>
+                <ComboBoxItem Content="Big 5"/>
+                <ComboBoxItem Content="Shift-JIS"/>
+                <ComboBoxItem Content="EUC-KR"/>
+                <ComboBoxItem Content="DOS"/>
+            </ComboBox>
+            <TextBlock Text="预览"/>
+            <TextBox Margin="0,4" x:Name="preview" Height="120" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" IsReadOnly="True"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

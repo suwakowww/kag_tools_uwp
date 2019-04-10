@@ -126,6 +126,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="cdlg\ansitake.xaml.cs">
+      <DependentUpon>ansitake.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Edit_ks.xaml.cs">
       <DependentUpon>Edit_ks.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="cdlg\ansitake.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Edit_ks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
