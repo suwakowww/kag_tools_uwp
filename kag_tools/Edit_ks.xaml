@@ -92,12 +92,12 @@
                         <TextBlock x:Name="win_page_size" Padding="0,8,0,8"/>
                     </CommandBar.Content>
                     <CommandBar.PrimaryCommands>
-                        <AppBarButton x:Name="bot_p_p" Label="上一个">
+                        <AppBarButton x:Name="bot_p_p" Label="上一个" Click="Bot_p_n_Click">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE72B;"/>
                             </AppBarButton.Icon>
                         </AppBarButton>
-                        <AppBarButton x:Name="bot_p_n" Label="下一个">
+                        <AppBarButton x:Name="bot_p_n" Label="下一个" Click="Bot_p_n_Click">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE72A;"/>
                             </AppBarButton.Icon>
@@ -136,7 +136,7 @@
                             <ScrollViewer>
                                 <StackPanel>
                                     <TextBlock Text="文件名："/>
-                                    <TextBlock/>
+                                    <TextBlock Text="{Binding Mode=OneWay, ElementName=file_info, Path=Text}"/>
                                     <TextBlock Text="日期："/>
                                     <TextBlock/>
                                     <TextBlock Text="位置："/>
@@ -173,12 +173,12 @@
                         <TextBlock x:Name="win_page_size2" Padding="0,8,0,8"/>
                     </CommandBar.Content>
                     <CommandBar.PrimaryCommands>
-                        <AppBarButton x:Name="bot_p_p2" Label="上一个">
+                        <AppBarButton x:Name="bot_p_p2" Label="上一个" Click="Bot_p_n_Click">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE72B;"/>
                             </AppBarButton.Icon>
                         </AppBarButton>
-                        <AppBarButton x:Name="bot_p_n2" Label="下一个">
+                        <AppBarButton x:Name="bot_p_n2" Label="下一个" Click="Bot_p_n_Click">
                             <AppBarButton.Icon>
                                 <FontIcon Glyph="&#xE72A;"/>
                             </AppBarButton.Icon>

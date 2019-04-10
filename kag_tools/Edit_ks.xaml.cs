@@ -186,6 +186,57 @@ namespace kag_tools
                 }
                 text_list.ItemsSource = perline;
                 text_list2.ItemsSource = perline;
+                file_info.Text = sf.Name;
+            }
+        }
+
+        private void Bot_p_n_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as AppBarButton).Name == "bot_p_n" || (sender as AppBarButton).Name == "bot_p_n2")
+            {
+                bot_p_p.IsEnabled = true;
+                bot_p_p2.IsEnabled = true;
+                if (large_view.Visibility == Visibility.Visible)
+                {
+                    text_list.SelectedIndex = text_list.SelectedIndex + 1;
+                    if (text_list.SelectedIndex >= text_list.Items.Count - 1)
+                    {
+                        bot_p_n.IsEnabled = false;
+                        bot_p_n2.IsEnabled = false;
+                    }
+                }
+                else
+                {
+                    text_list2.SelectedIndex = text_list2.SelectedIndex + 1;
+                    if (text_list2.SelectedIndex >= text_list2.Items.Count - 1)
+                    {
+                        bot_p_n.IsEnabled = false;
+                        bot_p_n2.IsEnabled = false;
+                    }
+                }
+            }
+            else
+            {
+                bot_p_n.IsEnabled = true;
+                bot_p_n2.IsEnabled = true;
+                if (large_view.Visibility == Visibility.Visible)
+                {
+                    text_list.SelectedIndex = text_list.SelectedIndex - 1;
+                    if (text_list.SelectedIndex <= 0)
+                    {
+                        bot_p_p.IsEnabled = false;
+                        bot_p_p2.IsEnabled = false;
+                    }
+                }
+                else
+                {
+                    text_list2.SelectedIndex = text_list2.SelectedIndex - 1;
+                    if (text_list2.SelectedIndex <= 0)
+                    {
+                        bot_p_p.IsEnabled = false;
+                        bot_p_p2.IsEnabled = false;
+                    }
+                }
             }
         }
     }
