@@ -143,6 +143,7 @@ namespace kag_tools
         #region 打开 *.ks 文件
         private async void Import_ks_Click(object sender, RoutedEventArgs e)
         {
+
             // 打开文件
             FileOpenPicker fop = new FileOpenPicker();
             fop.FileTypeFilter.Add(".ks");
@@ -150,6 +151,7 @@ namespace kag_tools
 
             if(sf!=null)
             {
+
                 //把文件转换为 ibuffer
                 IBuffer buffer = await FileIO.ReadBufferAsync(sf);
 
@@ -254,39 +256,43 @@ namespace kag_tools
         private void Text_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            //根据所选中的控件，对另一个隐藏的控件进行控制
-            if ((sender as ListView).Name == "text_list")
+            if (text_list.Items.Count > 1)
             {
-                text_src.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
-            }
-            else if ((sender as ListView).Name == "text_list2")
-            {
-                text_src2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                text_list.SelectedIndex = (sender as ListView).SelectedIndex;
-            }
 
-            //防止下标、上标越界
-            if ((sender as ListView).SelectedIndex == 0)
-            {
-                bot_p_n.IsEnabled = true;
-                bot_p_n2.IsEnabled = true;
-                bot_p_p.IsEnabled = false;
-                bot_p_p2.IsEnabled = false;
-            }
-            else if ((sender as ListView).SelectedIndex == (sender as ListView).Items.Count - 1)
-            {
-                bot_p_n.IsEnabled = false;
-                bot_p_n2.IsEnabled = false;
-                bot_p_p.IsEnabled = true;
-                bot_p_p2.IsEnabled = true;
-            }
-            else
-            {
-                bot_p_n.IsEnabled = true;
-                bot_p_n2.IsEnabled = true;
-                bot_p_p.IsEnabled = true;
-                bot_p_p2.IsEnabled = true;
+                //根据所选中的控件，对另一个隐藏的控件进行控制
+                if ((sender as ListView).Name == "text_list" && (sender as ListView).SelectedItem != null)
+                {
+                    text_src.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                    text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
+                }
+                else if ((sender as ListView).Name == "text_list2" && (sender as ListView).SelectedItem != null)
+                {
+                    text_src2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                    text_list.SelectedIndex = (sender as ListView).SelectedIndex;
+                }
+
+                //防止下标、上标越界
+                if ((sender as ListView).SelectedIndex == 0)
+                {
+                    bot_p_n.IsEnabled = true;
+                    bot_p_n2.IsEnabled = true;
+                    bot_p_p.IsEnabled = false;
+                    bot_p_p2.IsEnabled = false;
+                }
+                else if ((sender as ListView).SelectedIndex == (sender as ListView).Items.Count - 1)
+                {
+                    bot_p_n.IsEnabled = false;
+                    bot_p_n2.IsEnabled = false;
+                    bot_p_p.IsEnabled = true;
+                    bot_p_p2.IsEnabled = true;
+                }
+                else
+                {
+                    bot_p_n.IsEnabled = true;
+                    bot_p_n2.IsEnabled = true;
+                    bot_p_p.IsEnabled = true;
+                    bot_p_p2.IsEnabled = true;
+                }
             }
         }
         #endregion

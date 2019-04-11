@@ -39,7 +39,7 @@ namespace kag_tools_shared
                 if (tmp.StartsWith("[") && tmp.EndsWith("]"))
                 {
                     texttypes = 'c';
-                    tmp_cl = Colors.LightGray;
+                    tmp_cl = Colors.Gray;
                     tmp_cd = Colors.DarkGray;
                 }
 
@@ -47,7 +47,7 @@ namespace kag_tools_shared
                 else if (tmp.StartsWith("*") || tmp.StartsWith("@"))
                 {
                     texttypes = 'o';
-                    tmp_cl = Colors.LightGray;
+                    tmp_cl = Colors.Gray;
                     tmp_cd = Colors.DarkGray;
                 }
 
@@ -55,7 +55,7 @@ namespace kag_tools_shared
                 else if (tmp.StartsWith(";"))
                 {
                     texttypes = 'n';
-                    tmp_cl = Colors.LightGreen;
+                    tmp_cl = Colors.DarkGreen;
                     tmp_cd = Colors.Green;
                 }
 
@@ -63,7 +63,7 @@ namespace kag_tools_shared
                 else if (tmp == "")
                 {
                     texttypes = 'e';
-                    tmp_cl = Colors.LightGray;
+                    tmp_cl = Colors.Gray;
                     tmp_cd = Colors.DarkGray;
                 }
 
