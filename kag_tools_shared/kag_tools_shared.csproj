@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="dict.cs" />
     <Compile Include="nav_item.cs" />
     <Compile Include="parse_bytes.cs" />
     <Compile Include="parse_perline.cs" />

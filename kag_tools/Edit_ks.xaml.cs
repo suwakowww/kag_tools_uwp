@@ -30,6 +30,7 @@ namespace kag_tools
     public sealed partial class Edit_ks : Page
     {
         List<perlines> perline;
+        List<dictlist> dicts;
 
         public Edit_ks()
         {
@@ -281,6 +282,7 @@ namespace kag_tools
 
             if (text_list.Items.Count > 1)
             {
+                string texts = "";
 
                 //根据所选中的控件，对另一个隐藏的控件进行控制
                 if ((sender as ListView).Name == "text_list" && (sender as ListView).SelectedItem != null)
@@ -288,12 +290,14 @@ namespace kag_tools
                     text_src.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
                     text_dst.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
                     text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
+                    texts = text_src.Text;
                 }
                 else if ((sender as ListView).Name == "text_list2" && (sender as ListView).SelectedItem != null)
                 {
                     text_src2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
                     text_dst2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
                     text_list.SelectedIndex = (sender as ListView).SelectedIndex;
+                    texts = text_src2.Text;
                 }
 
                 //防止下标、上标越界
@@ -317,6 +321,14 @@ namespace kag_tools
                     bot_p_n2.IsEnabled = true;
                     bot_p_p.IsEnabled = true;
                     bot_p_p2.IsEnabled = true;
+                }
+
+                //加载词典
+                if (dicts != null)
+                {
+                    List<dictlist> filter_dict = dictlist.parse_filterdict(texts, dicts);
+                    dicts1.ItemsSource = filter_dict;
+                    dicts2.ItemsSource = filter_dict;
                 }
             }
         }
@@ -357,7 +369,29 @@ namespace kag_tools
                 await FileIO.WriteBytesAsync(sf, datas);
             }
         }
+
         #endregion
 
+        #region 加载词典
+        private async void Load_dict_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker fop = new FileOpenPicker();
+            fop.FileTypeFilter.Add(".csv");
+            StorageFile sf = await fop.PickSingleFileAsync();
+            if (sf != null)
+            {
+                if(sf.FileType==".csv")
+                {
+                    IBuffer buffer = await FileIO.ReadBufferAsync(sf);
+                    DataReader dataReader = DataReader.FromBuffer(buffer);
+                    byte[] csvsrc = new byte[dataReader.UnconsumedBufferLength];
+                    dataReader.ReadBytes(csvsrc);
+                    string encoding = parse_bytes.DetectUnicode(csvsrc);
+                    string csv = parse_bytes.byte2str(csvsrc, encoding);
+                    dicts = dictlist.parse_csvdict(csv);
+                }
+            }
+        }
+        #endregion
     }
 }
