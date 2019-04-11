@@ -209,7 +209,12 @@ namespace kag_tools
                 bot_p_p2.IsEnabled = true;
                 if (large_view.Visibility == Visibility.Visible)
                 {
-                    text_list.SelectedIndex = text_list.SelectedIndex + 1;
+                    while (true)
+                    {
+                        text_list.SelectedIndex = text_list.SelectedIndex + 1;
+                        if (((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                            break;
+                    }
                     if (text_list.SelectedIndex >= text_list.Items.Count - 1)
                     {
                         bot_p_n.IsEnabled = false;
@@ -218,7 +223,12 @@ namespace kag_tools
                 }
                 else
                 {
-                    text_list2.SelectedIndex = text_list2.SelectedIndex + 1;
+                    while (true)
+                    {
+                        text_list2.SelectedIndex = text_list2.SelectedIndex + 1;
+                        if (((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex == text_list2.Items.Count - 1)
+                            break;
+                    }
                     if (text_list2.SelectedIndex >= text_list2.Items.Count - 1)
                     {
                         bot_p_n.IsEnabled = false;
@@ -232,7 +242,12 @@ namespace kag_tools
                 bot_p_n2.IsEnabled = true;
                 if (large_view.Visibility == Visibility.Visible)
                 {
-                    text_list.SelectedIndex = text_list.SelectedIndex - 1;
+                    while (true)
+                    {
+                        text_list.SelectedIndex = text_list.SelectedIndex - 1;
+                        if (((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex <= 0)
+                            break;
+                    }
                     if (text_list.SelectedIndex <= 0)
                     {
                         bot_p_p.IsEnabled = false;
@@ -241,7 +256,12 @@ namespace kag_tools
                 }
                 else
                 {
-                    text_list2.SelectedIndex = text_list2.SelectedIndex - 1;
+                    while (true)
+                    {
+                        text_list2.SelectedIndex = text_list2.SelectedIndex - 1;
+                        if (((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex <= 0)
+                            break;
+                    }
                     if (text_list2.SelectedIndex <= 0)
                     {
                         bot_p_p.IsEnabled = false;
