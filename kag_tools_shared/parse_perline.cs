@@ -12,6 +12,7 @@ namespace kag_tools_shared
     public class perlines
     {
         public string texts { get; set; }
+        public string texts_dst { get; set; }
         public char texttype { get; set; }
         public SolidColorBrush textcolor { get; set; }
         public Color text_cd { get; set; }
@@ -84,7 +85,7 @@ namespace kag_tools_shared
                 }
 
                 //整理好之后，添加到一个列表中
-                perlinetext.Add(new perlines { texts = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
+                perlinetext.Add(new perlines { texts = tmp, texts_dst = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
             }
             return perlinetext;
         }
