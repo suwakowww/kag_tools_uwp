@@ -35,6 +35,7 @@ namespace kag_tools
             checkver();
         }
 
+        #region 系统版本检测
         private void checkver()
         {
             ulong v = ulong.Parse(Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamilyVersion);
@@ -49,7 +50,9 @@ namespace kag_tools
             }
 
         }
+        #endregion
 
+        #region 检测宽度
         /// <summary>
         /// 检测宽度
         /// </summary>
@@ -128,6 +131,7 @@ namespace kag_tools
                 //}
             }
         }
+        #endregion
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -136,6 +140,7 @@ namespace kag_tools
             win_page_size2.Text = win_page_size.Text;
         }
 
+        #region 打开 *.ks 文件
         private async void Import_ks_Click(object sender, RoutedEventArgs e)
         {
             // 打开文件
@@ -187,9 +192,13 @@ namespace kag_tools
                 text_list.ItemsSource = perline;
                 text_list2.ItemsSource = perline;
                 file_info.Text = sf.Name;
+                bot_p_n.IsEnabled = true;
+                bot_p_n2.IsEnabled = true;
             }
         }
+        #endregion
 
+        #region 上/下导航按钮控制
         private void Bot_p_n_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as AppBarButton).Name == "bot_p_n" || (sender as AppBarButton).Name == "bot_p_n2")
@@ -239,5 +248,48 @@ namespace kag_tools
                 }
             }
         }
+        #endregion
+
+        #region 列表同步、按钮控制等
+        private void Text_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            //根据所选中的控件，对另一个隐藏的控件进行控制
+            if ((sender as ListView).Name == "text_list")
+            {
+                text_src.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
+            }
+            else if ((sender as ListView).Name == "text_list2")
+            {
+                text_src2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                text_list.SelectedIndex = (sender as ListView).SelectedIndex;
+            }
+
+            //防止下标、上标越界
+            if ((sender as ListView).SelectedIndex == 0)
+            {
+                bot_p_n.IsEnabled = true;
+                bot_p_n2.IsEnabled = true;
+                bot_p_p.IsEnabled = false;
+                bot_p_p2.IsEnabled = false;
+            }
+            else if ((sender as ListView).SelectedIndex == (sender as ListView).Items.Count - 1)
+            {
+                bot_p_n.IsEnabled = false;
+                bot_p_n2.IsEnabled = false;
+                bot_p_p.IsEnabled = true;
+                bot_p_p2.IsEnabled = true;
+            }
+            else
+            {
+                bot_p_n.IsEnabled = true;
+                bot_p_n2.IsEnabled = true;
+                bot_p_p.IsEnabled = true;
+                bot_p_p2.IsEnabled = true;
+            }
+        }
+        #endregion
+
     }
 }
