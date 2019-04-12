@@ -139,12 +139,18 @@ namespace kag_tools
         }
         #endregion
 
+        #region 检测屏幕宽度，debug 用
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            bool debug_mode = true;
             checkwidth((sender as Page).ActualWidth,false);
-            win_page_size.Text = string.Format("窗口：{0} 像素，页面：{1} 像素",((int)Window.Current.Bounds.Width).ToString(),((int)(sender as Page).ActualWidth).ToString());
+            if (debug_mode == true)
+                win_page_size.Text = string.Format("窗口：{0} 像素，页面：{1} 像素", ((int)Window.Current.Bounds.Width).ToString(), ((int)(sender as Page).ActualWidth).ToString());
+            else
+                win_page_size.Text = "";
             win_page_size2.Text = win_page_size.Text;
         }
+        #endregion
 
         #region 打开 *.ks 文件
         private async void Import_ks_Click(object sender, RoutedEventArgs e)
@@ -355,6 +361,8 @@ namespace kag_tools
                 perline[text_list.SelectedIndex].texts_dst = text_dst2.Text;
                 text_dst.Text = text_dst2.Text;
             }
+            win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
+            win_page_size2.Text = win_page_size.Text;
         }
         #endregion
 
@@ -401,5 +409,6 @@ namespace kag_tools
             }
         }
         #endregion
+
     }
 }

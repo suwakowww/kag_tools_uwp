@@ -149,7 +149,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="76"/>
+                    <RowDefinition Height="116"/>
                     <RowDefinition Height="48"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
@@ -208,8 +208,8 @@
                 </Grid>
                 <Grid Grid.Row="1">
                     <StackPanel>
-                        <TextBox x:Name="text_src2" Margin="0,4" IsReadOnly="True" PlaceholderText="原文......"/>
-                        <TextBox x:Name="text_dst2" Margin="0,4" PlaceholderText="译文......"/>
+                        <TextBox x:Name="text_src2" Margin="0,4" Height="52" IsReadOnly="True" PlaceholderText="原文......" TextWrapping="Wrap"/>
+                        <TextBox x:Name="text_dst2" Margin="0,4" Height="52" PlaceholderText="译文......" TextWrapping="Wrap" TextChanged="Text_dst_TextChanged"/>
                     </StackPanel>
                 </Grid>
                 <CommandBar Grid.Row="2" x:Name="bot_cmdbar2" DefaultLabelPosition="Right" Background="{x:Null}" VerticalAlignment="Bottom">
