@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Navigation;
 using kag_tools_shared;
 using kag_tools.cdlg;
 using System.Text;
+using Windows.System;
+using Windows.Foundation.Metadata;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -189,12 +191,18 @@ namespace kag_tools
                 perline = parse_perline.parsestr(src2);
                 //按行拆分文本
 
-                for (int i=0;i<perline.Count;i++)
+                for (int i = 0; i < perline.Count; i++)
                 {
-                    
+
                     //根据每行内容，进行上色
-                    perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                    if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
+                        perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                    
+                    //由于有 bug ，暂时禁用
+                    //else
+                    //    perline[i].textcolor = new SolidColorBrush(this.RequestedTheme == ElementTheme.Dark ? perline[i].text_cl : perline[i].text_cd);
                 }
+
                 text_list.ItemsSource = perline;
                 text_list2.ItemsSource = perline;
                 file_info.Text = sf.Name;
