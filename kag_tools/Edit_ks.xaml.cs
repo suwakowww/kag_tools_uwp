@@ -410,5 +410,22 @@ namespace kag_tools
         }
         #endregion
 
+        #region 机器翻译
+        private async void Tr_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as AppBarButton).Name == "t_bai" || (sender as AppBarButton).Name == "t_bai2")
+            {
+                await Launcher.LaunchUriAsync(new Uri("http://fanyi.baidu.com/#jp/zh/" + text_src.Text));
+            }
+            else if ((sender as AppBarButton).Name == "t_goo" || (sender as AppBarButton).Name == "t_goo2")
+            {
+                await Launcher.LaunchUriAsync(new Uri("https://translate.google.com/#ja/zh-CN/" + text_src.Text));
+            }
+            else
+            {
+                await Launcher.LaunchUriAsync(new Uri("https://translate.google.cn/#ja/zh-CN/" + text_src.Text));
+            }
+        }
+        #endregion
     }
 }

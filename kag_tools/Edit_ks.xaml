@@ -10,6 +10,8 @@
     >
     <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"-->
     <Grid>
+        
+        <!--#region 顶部导航栏-->
         <CommandBar x:Name="top_cmdbar" DefaultLabelPosition="Right">
             <AppBarButton Label="打开工程 (*.ksprj)">
                 <AppBarButton.Icon>
@@ -37,6 +39,9 @@
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
+        <!--#endregion-->
+        
+        <!--#region 大屏幕视图-->
         <Grid x:Name="large_view" Margin="4,48,4,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -130,6 +135,23 @@
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton x:Name="t_bai" Label="机器翻译（百度）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="t_goo" Label="机器翻译（Google）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="t_gcn" Label="机器翻译（Google CN 域名）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
 
             </Grid>
@@ -144,6 +166,9 @@
                 </ListView>
             </Grid>
         </Grid>
+        <!--#endregion-->
+        
+        <!--#region 小屏幕视图-->
         <Grid x:Name="small_view" Margin="4,48,4,0">
             <!--底部 Commandbar2-->
             <Grid>
@@ -233,9 +258,27 @@
                             </AppBarButton.Icon>
                         </AppBarButton>
                     </CommandBar.PrimaryCommands>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton x:Name="t_bai2" Label="机器翻译（百度）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="t_goo2" Label="机器翻译（Google）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarButton x:Name="t_gcn2" Label="机器翻译（Google CN 域名）" Click="Tr_Click">
+                            <AppBarButton.Icon>
+                                <FontIcon Glyph="&#xE164;"/>
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
-
         </Grid>
+        <!--#endregion-->
+        
     </Grid>
 </Page>
