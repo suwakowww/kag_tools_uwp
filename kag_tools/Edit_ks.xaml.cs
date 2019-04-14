@@ -21,6 +21,7 @@ using kag_tools.cdlg;
 using System.Text;
 using Windows.System;
 using Windows.Foundation.Metadata;
+using System.Threading.Tasks;
 
 // 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
@@ -155,49 +156,30 @@ namespace kag_tools
         #region 打开 *.ks 文件
         private async void Import_ks_Click(object sender, RoutedEventArgs e)
         {
+            loadsave loadsave = new loadsave();
+            parse_bytes parse_bytes = new parse_bytes();
+            parse_perline parse_perline = new parse_perline();
 
             // 打开文件
-            FileOpenPicker fop = new FileOpenPicker();
-            fop.FileTypeFilter.Add(".ks");
-            StorageFile sf = await fop.PickSingleFileAsync();
+            files files = await loadsave.load_ksasync();
 
-            if(sf!=null)
+            if (files.srcode != null)
             {
+                string encoding = parse_bytes.DetectUnicode(files.srcode);
+                string src2;
 
-                //把文件转换为 ibuffer
-                IBuffer buffer = await FileIO.ReadBufferAsync(sf);
-                parse_bytes parse_bytes = new parse_bytes();
-                parse_perline parse_perline = new parse_perline();
-
-                //以二进制方式读取文件
-                using (DataReader datareader = DataReader.FromBuffer(buffer))
+                //ANSI 处理
+                if (encoding == "ansi")
                 {
-                    //DataReader datareader = DataReader.FromBuffer(buffer);
-                    byte[] src = new byte[datareader.UnconsumedBufferLength];
-                    datareader.ReadBytes(src);
-                    //判断字符编码
-                    string encoding = parse_bytes.DetectUnicode(src);
-                    string src2;
-                    //判断 ANSI 编码
-                    if (encoding == "ansi")
-                    {
-                        //ContentDialog cdlg = new ContentDialog()
-                        //{
-                        //    Title = "检测到 ANSI 编码",
-                        //    Content = "暂时无法解析 ANSI 编码。",
-                        //    PrimaryButtonText = "关闭"
-                        //};
-                        //await cdlg.ShowAsync();
-                        ansitake ansitake_dlg = new ansitake();
-                        ansitake_dlg.src = src;
-                        await ansitake_dlg.ShowAsync();
-                        encoding = ansitake_dlg.cp;
-                    }
-
-                    //还原二进制为文本
-                    src2 = parse_bytes.byte2str(src, encoding);
-                    perline = parse_perline.parsestr(src2);
+                    ansitake ansitake_dlg = new ansitake();
+                    ansitake_dlg.src = files.srcode;
+                    await ansitake_dlg.ShowAsync();
+                    encoding = ansitake_dlg.cp;
                 }
+
+                //还原二进制为文本
+                src2 = parse_bytes.byte2str(files.srcode, encoding);
+                perline = parse_perline.parsestr(src2);
 
                 //按行拆分文本
 
@@ -207,7 +189,7 @@ namespace kag_tools
                     //根据每行内容，进行上色
                     if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
                         perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
-                    
+
                     //由于有 bug ，暂时禁用
                     //else
                     //    perline[i].textcolor = new SolidColorBrush(this.RequestedTheme == ElementTheme.Dark ? perline[i].text_cl : perline[i].text_cd);
@@ -215,7 +197,7 @@ namespace kag_tools
 
                 text_list.ItemsSource = perline;
                 text_list2.ItemsSource = perline;
-                file_info.Text = sf.Name;
+                file_info.Text = files.filename;
                 bot_p_n.IsEnabled = true;
                 bot_p_n2.IsEnabled = true;
             }
@@ -374,21 +356,15 @@ namespace kag_tools
         #region 保存 .ks 文件
         private async void Output_ks_Click(object sender, RoutedEventArgs e)
         {
-            FileSavePicker fos = new FileSavePicker();
-            fos.FileTypeChoices.Add("KAG Script", new List<string> { ".ks" });
-            StorageFile sf = await fos.PickSaveFileAsync();
-            if (sf != null)
+            loadsave loadsave = new loadsave();
+            string status = await loadsave.save_ksasync(perline);
+            ContentDialog result = new ContentDialog()
             {
-                Encoding encoding = Encoding.Unicode;   //默认保存为 UTF-16 LE 编码
-                byte[] datas;
-                string save_file = null;
-                for (int i = 0; i < perline.Count; i++)
-                {
-                    save_file = save_file + perline[i].texts_dst + "\r\n";
-                }
-                datas = encoding.GetBytes(save_file);
-                await FileIO.WriteBytesAsync(sf, datas);
-            }
+                Title = "结果",
+                Content = status,
+                PrimaryButtonText = "关闭"
+            };
+            await result.ShowAsync();
         }
 
         #endregion
