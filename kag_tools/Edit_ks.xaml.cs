@@ -163,7 +163,7 @@ namespace kag_tools
             // 打开文件
             files files = await loadsave.load_ksasync();
 
-            if (files.srcode != null)
+            if (files.filename != "empty")
             {
                 string encoding = parse_bytes.DetectUnicode(files.srcode);
                 string src2;

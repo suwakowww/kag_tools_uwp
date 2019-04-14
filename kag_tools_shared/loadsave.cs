@@ -62,6 +62,8 @@ namespace kag_tools_shared
             fop.FileTypeFilter.Add(".ks");
             StorageFile sf = await fop.PickSingleFileAsync();
             byte[] src;
+            files files;
+            string filename;
 
             if (sf != null)
             {
@@ -77,14 +79,17 @@ namespace kag_tools_shared
                     src = new byte[datareader.UnconsumedBufferLength];
                     datareader.ReadBytes(src);
                 }
+                filename = sf.Name;
             }
             else
             {
-                src = null;
+                //由于直接返回 null 会导致 System.NullReferenceException，所以随便返回一个
+                src = Encoding.ASCII.GetBytes("error");
+                filename = "empty";
             }
 
-            files files;
-            files.filename = sf.Name;
+
+            files.filename = filename;
             files.srcode = src;
             return files;
         }
