@@ -166,35 +166,39 @@ namespace kag_tools
 
                 //把文件转换为 ibuffer
                 IBuffer buffer = await FileIO.ReadBufferAsync(sf);
+                parse_bytes parse_bytes = new parse_bytes();
+                parse_perline parse_perline = new parse_perline();
 
                 //以二进制方式读取文件
-                DataReader datareader = DataReader.FromBuffer(buffer);
-                byte[] src = new byte[datareader.UnconsumedBufferLength];
-                datareader.ReadBytes(src);
-
-                //判断字符编码
-                string encoding = parse_bytes.DetectUnicode(src);
-                string src2;
-
-                //判断 ANSI 编码
-                if (encoding == "ansi")
+                using (DataReader datareader = DataReader.FromBuffer(buffer))
                 {
-                    //ContentDialog cdlg = new ContentDialog()
-                    //{
-                    //    Title = "检测到 ANSI 编码",
-                    //    Content = "暂时无法解析 ANSI 编码。",
-                    //    PrimaryButtonText = "关闭"
-                    //};
-                    //await cdlg.ShowAsync();
-                    ansitake ansitake_dlg = new ansitake();
-                    ansitake_dlg.src = src;
-                    await ansitake_dlg.ShowAsync();
-                    encoding = ansitake_dlg.cp;
+                    //DataReader datareader = DataReader.FromBuffer(buffer);
+                    byte[] src = new byte[datareader.UnconsumedBufferLength];
+                    datareader.ReadBytes(src);
+                    //判断字符编码
+                    string encoding = parse_bytes.DetectUnicode(src);
+                    string src2;
+                    //判断 ANSI 编码
+                    if (encoding == "ansi")
+                    {
+                        //ContentDialog cdlg = new ContentDialog()
+                        //{
+                        //    Title = "检测到 ANSI 编码",
+                        //    Content = "暂时无法解析 ANSI 编码。",
+                        //    PrimaryButtonText = "关闭"
+                        //};
+                        //await cdlg.ShowAsync();
+                        ansitake ansitake_dlg = new ansitake();
+                        ansitake_dlg.src = src;
+                        await ansitake_dlg.ShowAsync();
+                        encoding = ansitake_dlg.cp;
+                    }
+
+                    //还原二进制为文本
+                    src2 = parse_bytes.byte2str(src, encoding);
+                    perline = parse_perline.parsestr(src2);
                 }
 
-                //还原二进制为文本
-                src2 = parse_bytes.byte2str(src, encoding);
-                perline = parse_perline.parsestr(src2);
                 //按行拆分文本
 
                 for (int i = 0; i < perline.Count; i++)
@@ -293,6 +297,7 @@ namespace kag_tools
         #region 列表同步、按钮控制等
         private void Text_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            dictlist dictlist = new dictlist();
 
             if (text_list.Items.Count > 1)
             {
@@ -394,17 +399,22 @@ namespace kag_tools
             FileOpenPicker fop = new FileOpenPicker();
             fop.FileTypeFilter.Add(".csv");
             StorageFile sf = await fop.PickSingleFileAsync();
+            dictlist dictlist = new dictlist();
+            parse_bytes parse_bytes = new parse_bytes();
             if (sf != null)
             {
                 if(sf.FileType==".csv")
                 {
                     IBuffer buffer = await FileIO.ReadBufferAsync(sf);
-                    DataReader dataReader = DataReader.FromBuffer(buffer);
-                    byte[] csvsrc = new byte[dataReader.UnconsumedBufferLength];
-                    dataReader.ReadBytes(csvsrc);
-                    string encoding = parse_bytes.DetectUnicode(csvsrc);
-                    string csv = parse_bytes.byte2str(csvsrc, encoding);
-                    dicts = dictlist.parse_csvdict(csv);
+
+                    using (DataReader dataReader = DataReader.FromBuffer(buffer))
+                    {
+                        byte[] csvsrc = new byte[dataReader.UnconsumedBufferLength];
+                        dataReader.ReadBytes(csvsrc);
+                        string encoding = parse_bytes.DetectUnicode(csvsrc);
+                        string csv = parse_bytes.byte2str(csvsrc, encoding);
+                        dicts = dictlist.parse_csvdict(csv);
+                    }
                 }
             }
         }

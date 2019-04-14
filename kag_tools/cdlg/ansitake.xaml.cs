@@ -38,6 +38,7 @@ namespace kag_tools.cdlg
         {
             string cpe;
             string previewtext;
+            parse_bytes parse_bytes = new parse_bytes();
 
             //手动选择字符编码
             switch(codepage.SelectedIndex)

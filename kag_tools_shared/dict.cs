@@ -13,7 +13,7 @@ namespace kag_tools_shared
         public string types { get; set; }
         public string dst { get; set; }
 
-        public static List<dictlist> parse_csvdict(string src)
+        public List<dictlist> parse_csvdict(string src)
         {
             List<dictlist> dictlists = new List<dictlist>();
             string[] perline = src.Split(new string[] { "\r\n" }, StringSplitOptions.None);
@@ -25,7 +25,7 @@ namespace kag_tools_shared
             return dictlists;
         }
 
-        public static List<dictlist> parse_filterdict(string src, List<dictlist> srcdicts)
+        public List<dictlist> parse_filterdict(string src, List<dictlist> srcdicts)
         {
             List<dictlist> dictlists = new List<dictlist>();
             for (int i = 0; i < srcdicts.Count; i++)

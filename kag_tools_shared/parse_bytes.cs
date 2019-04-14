@@ -15,7 +15,7 @@ namespace kag_tools_shared
         /// </summary>
         /// <param name="src">二进制原文</param>
         /// <returns>字符编码</returns>
-        public static string DetectUnicode(byte[] src)
+        public string DetectUnicode(byte[] src)
         {
             // utf8 with bom
             if (src[0] == 239 && src[1] == 187 && src[2] == 191) return "utf8";
@@ -36,7 +36,7 @@ namespace kag_tools_shared
         /// </summary>
         /// <param name="src2">待检测的内容</param>
         /// <returns>UTF-8 编码与否</returns>
-        private static bool IsUtf8NoBom(byte[] src2)
+        private bool IsUtf8NoBom(byte[] src2)
         {
             for (int i = 0; i < src2.Length; i++)
             {
@@ -73,7 +73,7 @@ namespace kag_tools_shared
         /// <param name="src">二进制内容</param>
         /// <param name="encoding">字符编码</param>
         /// <returns>二进制内容所对应的文本</returns>
-        public static string byte2str(byte[] src, string encoding)
+        public string byte2str(byte[] src, string encoding)
         {
             string str;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -111,7 +111,7 @@ namespace kag_tools_shared
         /// </summary>
         /// <param name="encoding">字符编码名称</param>
         /// <returns>代码页</returns>
-        private static Encoding GetEncoding(string encoding)
+        private Encoding GetEncoding(string encoding)
         {
             switch(encoding)
             {

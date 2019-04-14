@@ -21,7 +21,7 @@ namespace kag_tools_shared
 
     public class parse_perline
     {
-        public static List<perlines> parsestr(string src)
+        public List<perlines> parsestr(string src)
         {
             List<perlines> perlinetext = new List<perlines>();
 
