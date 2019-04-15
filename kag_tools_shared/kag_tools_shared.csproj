@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="dict.cs" />
+    <Compile Include="loaddict.cs" />
     <Compile Include="loadsave.cs" />
     <Compile Include="nav_item.cs" />
     <Compile Include="parse_bytes.cs" />

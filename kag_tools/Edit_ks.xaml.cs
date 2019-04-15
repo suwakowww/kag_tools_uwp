@@ -372,27 +372,8 @@ namespace kag_tools
         #region 加载词典
         private async void Load_dict_Click(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker fop = new FileOpenPicker();
-            fop.FileTypeFilter.Add(".csv");
-            StorageFile sf = await fop.PickSingleFileAsync();
-            dictlist dictlist = new dictlist();
-            parse_bytes parse_bytes = new parse_bytes();
-            if (sf != null)
-            {
-                if(sf.FileType==".csv")
-                {
-                    IBuffer buffer = await FileIO.ReadBufferAsync(sf);
-
-                    using (DataReader dataReader = DataReader.FromBuffer(buffer))
-                    {
-                        byte[] csvsrc = new byte[dataReader.UnconsumedBufferLength];
-                        dataReader.ReadBytes(csvsrc);
-                        string encoding = parse_bytes.DetectUnicode(csvsrc);
-                        string csv = parse_bytes.byte2str(csvsrc, encoding);
-                        dicts = dictlist.parse_csvdict(csv);
-                    }
-                }
-            }
+            loaddict loaddict = new loaddict();
+            dicts = await loaddict.loaddictasync();
         }
         #endregion
 
