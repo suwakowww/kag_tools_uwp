@@ -30,7 +30,10 @@ namespace kag_tools_shared
                 string save_file = null;
                 for (int i = 0; i < perline.Count; i++)
                 {
-                    save_file = save_file + perline[i].texts_dst + "\r\n";
+                    if (i == perline.Count - 1)
+                        save_file = save_file + perline[i].texts_dst;
+                    else
+                        save_file = save_file + perline[i].texts_dst + "\r\n";
                 }
                 datas = encoding.GetBytes(save_file);
                 try
