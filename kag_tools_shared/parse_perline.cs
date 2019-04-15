@@ -11,6 +11,7 @@ namespace kag_tools_shared
 {
     public class perlines
     {
+        public int line_num { get; set; }
         public string texts { get; set; }
         public string texts_dst { get; set; }
         public char texttype { get; set; }
@@ -85,9 +86,20 @@ namespace kag_tools_shared
                 }
 
                 //整理好之后，添加到一个列表中
-                perlinetext.Add(new perlines { texts = tmp, texts_dst = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
+                perlinetext.Add(new perlines { line_num=i, texts = tmp, texts_dst = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
             }
             return perlinetext;
+        }
+
+        public List<perlines> filter_perline(List<perlines> perline)
+        {
+            List<perlines> filtered = new List<perlines>();
+            for (int i = 0; i < perline.Count; i++)
+            {
+                if (perline[i].texttype == 's' || perline[i].texttype == 't')
+                    filtered.Add(perline[i]);
+            }
+            return filtered;
         }
     }
 }

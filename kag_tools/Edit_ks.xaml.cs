@@ -34,6 +34,8 @@ namespace kag_tools
     {
         List<perlines> perline;
         List<dictlist> dicts;
+        bool textonly = true;   //仅显示文本
+        List<perlines> filter_perline;
 
         public Edit_ks()
         {
@@ -195,8 +197,21 @@ namespace kag_tools
                     //    perline[i].textcolor = new SolidColorBrush(this.RequestedTheme == ElementTheme.Dark ? perline[i].text_cl : perline[i].text_cd);
                 }
 
-                text_list.ItemsSource = perline;
-                text_list2.ItemsSource = perline;
+                if (textonly == true)
+                {
+                    //过滤代码等内容，只留下文本
+                    filter_perline = parse_perline.filter_perline(perline);
+                    text_list.ItemsSource = filter_perline;
+                    text_list2.ItemsSource = filter_perline;
+                }
+                else
+                {
+                    //原样输出
+                    text_list.ItemsSource = perline;
+                    text_list2.ItemsSource = perline;
+                }
+
+
                 file_info.Text = files.filename;
                 bot_p_n.IsEnabled = true;
                 bot_p_n2.IsEnabled = true;
@@ -338,14 +353,24 @@ namespace kag_tools
         #region 写入修改到列表
         private void Text_dst_TextChanged(object sender, TextChangedEventArgs e)
         {
+            //由于引入了“仅显示文本”，这里需要对索引值重新定位
+            int realindex;
+            if (textonly == true)
+            {
+                realindex = filter_perline[text_list.SelectedIndex].line_num;
+            }
+            else
+            {
+                realindex = perline[text_list.SelectedIndex].line_num;
+            }
             if ((sender as TextBox).Name == "text_dst")
             {
-                perline[text_list.SelectedIndex].texts_dst = text_dst.Text;
+                perline[realindex].texts_dst = text_dst.Text;
                 text_dst2.Text = text_dst.Text;
             }
             else
             {
-                perline[text_list.SelectedIndex].texts_dst = text_dst2.Text;
+                perline[realindex].texts_dst = text_dst2.Text;
                 text_dst.Text = text_dst2.Text;
             }
             win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
