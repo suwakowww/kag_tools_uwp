@@ -292,6 +292,15 @@ namespace kag_tools
                     }
                 }
             }
+            countword();
+        }
+        #endregion
+
+        #region 字数统计
+        private void countword()
+        {
+            win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
+            win_page_size2.Text = win_page_size.Text;
         }
         #endregion
 
@@ -350,6 +359,7 @@ namespace kag_tools
                     dicts1.ItemsSource = filter_dict;
                     dicts2.ItemsSource = filter_dict;
                 }
+                countword();
             }
         }
         #endregion
@@ -379,8 +389,7 @@ namespace kag_tools
                     perline[realindex].texts_dst = text_dst2.Text;
                     text_dst.Text = text_dst2.Text;
                 }
-                win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
-                win_page_size2.Text = win_page_size.Text;
+                countword();
             }
         }
         #endregion
