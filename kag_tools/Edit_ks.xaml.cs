@@ -215,6 +215,10 @@ namespace kag_tools
                 file_info.Text = files.filename;
                 bot_p_n.IsEnabled = true;
                 bot_p_n2.IsEnabled = true;
+                text_src.IsEnabled = true;
+                text_src2.IsEnabled = true;
+                text_dst.IsEnabled = true;
+                text_dst2.IsEnabled = true;
             }
         }
         #endregion
@@ -351,7 +355,7 @@ namespace kag_tools
         #endregion
 
         #region 写入修改到列表
-        private void Text_dst_TextChanged(object sender, TextChangedEventArgs e)
+        private void Text_dst_LostFocus(object sender, RoutedEventArgs e)
         {
             //由于引入了“仅显示文本”，这里需要对索引值重新定位
             int realindex;
@@ -419,5 +423,6 @@ namespace kag_tools
             }
         }
         #endregion
+
     }
 }
