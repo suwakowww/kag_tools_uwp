@@ -357,28 +357,31 @@ namespace kag_tools
         #region 写入修改到列表
         private void Text_dst_LostFocus(object sender, RoutedEventArgs e)
         {
-            //由于引入了“仅显示文本”，这里需要对索引值重新定位
-            int realindex;
-            if (textonly == true)
+            if ((sender as TextBox).Text != "")
             {
-                realindex = filter_perline[text_list.SelectedIndex].line_num;
+                //由于引入了“仅显示文本”，这里需要对索引值重新定位
+                int realindex;
+                if (textonly == true)
+                {
+                    realindex = filter_perline[text_list.SelectedIndex].line_num;
+                }
+                else
+                {
+                    realindex = perline[text_list.SelectedIndex].line_num;
+                }
+                if ((sender as TextBox).Name == "text_dst")
+                {
+                    perline[realindex].texts_dst = text_dst.Text;
+                    text_dst2.Text = text_dst.Text;
+                }
+                else
+                {
+                    perline[realindex].texts_dst = text_dst2.Text;
+                    text_dst.Text = text_dst2.Text;
+                }
+                win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
+                win_page_size2.Text = win_page_size.Text;
             }
-            else
-            {
-                realindex = perline[text_list.SelectedIndex].line_num;
-            }
-            if ((sender as TextBox).Name == "text_dst")
-            {
-                perline[realindex].texts_dst = text_dst.Text;
-                text_dst2.Text = text_dst.Text;
-            }
-            else
-            {
-                perline[realindex].texts_dst = text_dst2.Text;
-                text_dst.Text = text_dst2.Text;
-            }
-            win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
-            win_page_size2.Text = win_page_size.Text;
         }
         #endregion
 
