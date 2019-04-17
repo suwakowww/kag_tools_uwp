@@ -215,6 +215,10 @@ namespace kag_tools
                 file_info.Text = files.filename;
                 bot_p_n.IsEnabled = true;
                 bot_p_n2.IsEnabled = true;
+                text_src.IsEnabled = true;
+                text_src2.IsEnabled = true;
+                text_dst.IsEnabled = true;
+                text_dst2.IsEnabled = true;
             }
         }
         #endregion
