@@ -105,12 +105,12 @@
 
                 <!--原文显示区-->
                 <Grid Grid.Row="1" Grid.Column="0" Margin="0,4">
-                    <TextBox x:Name="text_src" IsReadOnly="True" PlaceholderText="原文......" Margin="4,0" TextWrapping="Wrap" IsEnabled="False"/>
+                    <TextBox x:Name="text_src" IsReadOnly="True" PlaceholderText="原文......" Margin="4,0" TextWrapping="Wrap"/>
                 </Grid>
 
                 <!--译文显示区-->
                 <Grid Grid.Row="1" Grid.Column="1" Margin="0,4">
-                    <TextBox x:Name="text_dst" PlaceholderText="译文......" Margin="4,0" TextWrapping="Wrap" LostFocus="Text_dst_LostFocus" IsEnabled="False"/>
+                    <TextBox x:Name="text_dst" PlaceholderText="译文......" Margin="4,0" TextWrapping="Wrap" TextChanged="Text_dst_TextChanged"/>
                 </Grid>
 
                 <!--底部 Commandbar-->
@@ -233,8 +233,8 @@
                 </Grid>
                 <Grid Grid.Row="1">
                     <StackPanel>
-                        <TextBox x:Name="text_src2" Margin="0,4" Height="52" IsReadOnly="True" PlaceholderText="原文......" TextWrapping="Wrap" IsEnabled="False"/>
-                        <TextBox x:Name="text_dst2" Margin="0,4" Height="52" PlaceholderText="译文......" TextWrapping="Wrap" LostFocus="Text_dst_LostFocus" IsEnabled="False"/>
+                        <TextBox x:Name="text_src2" Margin="0,4" Height="52" IsReadOnly="True" PlaceholderText="原文......" TextWrapping="Wrap"/>
+                        <TextBox x:Name="text_dst2" Margin="0,4" Height="52" PlaceholderText="译文......" TextWrapping="Wrap" TextChanged="Text_dst_TextChanged"/>
                     </StackPanel>
                 </Grid>
                 <CommandBar Grid.Row="2" x:Name="bot_cmdbar2" DefaultLabelPosition="Right" Background="{x:Null}" VerticalAlignment="Bottom">
