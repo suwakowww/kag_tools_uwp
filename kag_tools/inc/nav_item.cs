@@ -1,4 +1,5 @@
 ﻿using kag_tools_shared;
+using kag_tools_ui;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace kag_tools.inc
             List<nav_item> nav_items = new List<nav_item>();
             //,U+E10F / Home
             //,U+E70F / Edit
-            nav_items.Add(new nav_item { nav_name = "开始", nav_glyph = "", nav_page = typeof(Start) });
+            nav_items.Add(new nav_item { nav_name = "开始", nav_glyph = "", nav_page = typeof(kag_tools_ui.Start) });
             nav_items.Add(new nav_item { nav_name = "文本编辑", nav_glyph = "", nav_page = typeof(Edit_ks) });
             return nav_items;
         }
