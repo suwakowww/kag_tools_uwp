@@ -120,6 +120,12 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cdlg\ansitake.xaml.cs">
+      <DependentUpon>ansitake.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Edit_ks.xaml.cs">
+      <DependentUpon>Edit_ks.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Start.xaml.cs">
       <DependentUpon>Start.xaml</DependentUpon>
@@ -132,10 +138,24 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="cdlg\ansitake.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Edit_ks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Start.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\kag_tools_shared\kag_tools_shared.csproj">
+      <Project>{7C70FF92-EA39-4D16-9565-9F380EA4A822}</Project>
+      <Name>kag_tools_shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
