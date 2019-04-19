@@ -145,10 +145,9 @@ namespace kag_tools_ui
                     //根据每行内容，进行上色
                     if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
                         perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
-
-                    //由于有 bug ，暂时禁用
-                    //else
-                    //    perline[i].textcolor = new SolidColorBrush(this.RequestedTheme == ElementTheme.Dark ? perline[i].text_cl : perline[i].text_cd);
+                    else
+                        //由于 this.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                        perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
                 }
 
                 if (textonly == true)

@@ -86,9 +86,14 @@ Public NotInheritable Class Edit_ks
             perline = parse_perline.parsestr(src2)
 
             '按行拆分文本
-            For i = 1 To perline.Count
-                '计划中
-                'perline[i].textcolor = New SolidColorBrush(this.RequestedTheme == ElementTheme.Dark ? perline[i].text_cl : perline[i].text_cd);
+            For i = 0 To perline.Count - 1
+                '根据每行内容，进行上色
+                '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
+                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+                Else
+                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                End If
             Next
 
             If textonly = True Then
