@@ -73,48 +73,48 @@ Public NotInheritable Class Edit_ks
             Dim encoding As String = parse_bytes.DetectUnicode(files.srcode)
             Dim src2 As String
 
-            ''ANSI 处理
-            'If encoding = "ansi" Then
-            '    Dim ansitake_dlg As New ansitake()
-            '    ansitake_dlg.src = files.srcode
-            '    Await ansitake_dlg.ShowAsync()
-            '    encoding = ansitake_dlg.cp
-            'End If
+            'ANSI 处理
+            If encoding = "ansi" Then
+                Dim ansitake_dlg As New ansitake()
+                ansitake_dlg.src = files.srcode
+                Await ansitake_dlg.ShowAsync()
+                encoding = ansitake_dlg.cp
+            End If
 
             '还原二进制为文本
             src2 = parse_bytes.byte2str(files.srcode, encoding)
-            perline = parse_perline.parsestr(src2)
+                perline = parse_perline.parsestr(src2)
 
-            '按行拆分文本
-            For i = 0 To perline.Count - 1
-                '根据每行内容，进行上色
-                '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
-                If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
-                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+                '按行拆分文本
+                For i = 0 To perline.Count - 1
+                    '根据每行内容，进行上色
+                    '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                    If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
+                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+                    Else
+                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                    End If
+                Next
+
+                If textonly = True Then
+                    '过滤代码等内容，只留下文本
+                    filter_perline = parse_perline.filter_perline(perline)
+                    text_list.ItemsSource = filter_perline
+                    text_list2.ItemsSource = filter_perline
                 Else
-                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                    '原样输出
+                    text_list.ItemsSource = perline
+                    text_list2.ItemsSource = perline
                 End If
-            Next
 
-            If textonly = True Then
-                '过滤代码等内容，只留下文本
-                filter_perline = parse_perline.filter_perline(perline)
-                text_list.ItemsSource = filter_perline
-                text_list2.ItemsSource = filter_perline
-            Else
-                '原样输出
-                text_list.ItemsSource = perline
-                text_list2.ItemsSource = perline
+                file_info.Text = files.filename
+                bot_p_n.IsEnabled = True
+                bot_p_n2.IsEnabled = True
+                text_src.IsEnabled = True
+                text_src2.IsEnabled = True
+                text_dst.IsEnabled = True
+                text_dst2.IsEnabled = True
             End If
-
-            file_info.Text = files.filename
-            bot_p_n.IsEnabled = True
-            bot_p_n2.IsEnabled = True
-            text_src.IsEnabled = True
-            text_src2.IsEnabled = True
-            text_dst.IsEnabled = True
-            text_dst2.IsEnabled = True
-        End If
     End Sub
 #End Region
 

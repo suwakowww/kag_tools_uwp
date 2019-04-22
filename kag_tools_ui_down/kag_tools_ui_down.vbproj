@@ -138,6 +138,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cdlg\ansitake.xaml.vb">
+      <DependentUpon>ansitake.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Edit_ks.xaml.vb">
       <DependentUpon>Edit_ks.xaml</DependentUpon>
     </Compile>
@@ -183,6 +186,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="cdlg\ansitake.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Edit_ks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
