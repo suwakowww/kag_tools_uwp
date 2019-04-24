@@ -119,7 +119,7 @@ namespace kag_tools_ui
             // 打开文件
             files files = await loadsave.load_ksasync();
 
-            if (files.filename != "empty")
+            if (files.filename != "empty" && files.srcode.Count() != 0)
             {
                 string encoding = parse_bytes.DetectUnicode(files.srcode);
                 string src2;
@@ -172,6 +172,20 @@ namespace kag_tools_ui
                 text_src2.IsEnabled = true;
                 text_dst.IsEnabled = true;
                 text_dst2.IsEnabled = true;
+            }
+            else
+            {
+                //如果打开文件的过程被中断（比如：按下了“取消”键），会返回“empty”。
+                //由于发现打开空白文件的时候会发生错误，所以这里追加判断打开文件的情况。
+                string err_msg = files.filename == "empty" ? "没有打开文件。" : string.Format("打开了空白的文件：{0}。", files.filename);
+
+                ContentDialog err_dlg = new ContentDialog()
+                {
+                    Title = "发生错误",
+                    Content = err_msg,
+                    PrimaryButtonText = "关闭"
+                };
+                await err_dlg.ShowAsync();
             }
         }
         #endregion
