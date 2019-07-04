@@ -319,10 +319,11 @@ namespace kag_tools_ui
         #endregion
 
         #region 字数统计
-        private void countword()
+        private int countword()
         {
             win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
             win_page_size2.Text = win_page_size.Text;
+            return text_dst.Text.Count();
         }
         #endregion
 
@@ -333,25 +334,31 @@ namespace kag_tools_ui
             {
                 //由于引入了“仅显示文本”，这里需要对索引值重新定位
                 int realindex;
-                if (textonly == true)
+                
+                int words = countword();
+
+                //在写入修改之前，先确认有内容再进行写入
+                if (words != 0)
                 {
-                    realindex = filter_perline[text_list.SelectedIndex].line_num;
+                    if (textonly == true)
+                    {
+                        realindex = filter_perline[text_list.SelectedIndex].line_num;
+                    }
+                    else
+                    {
+                        realindex = perline[text_list.SelectedIndex].line_num;
+                    }
+                    if ((sender as TextBox).Name == "text_dst")
+                    {
+                        perline[realindex].texts_dst = text_dst.Text;
+                        text_dst2.Text = text_dst.Text;
+                    }
+                    else
+                    {
+                        perline[realindex].texts_dst = text_dst2.Text;
+                        text_dst.Text = text_dst2.Text;
+                    }
                 }
-                else
-                {
-                    realindex = perline[text_list.SelectedIndex].line_num;
-                }
-                if ((sender as TextBox).Name == "text_dst")
-                {
-                    perline[realindex].texts_dst = text_dst.Text;
-                    text_dst2.Text = text_dst.Text;
-                }
-                else
-                {
-                    perline[realindex].texts_dst = text_dst2.Text;
-                    text_dst.Text = text_dst2.Text;
-                }
-                countword();
             }
         }
         #endregion
