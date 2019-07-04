@@ -241,7 +241,7 @@ Public NotInheritable Class Edit_ks
     Private Function countword() As Integer
         win_page_size.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count())
         win_page_size2.Text = win_page_size.Text
-        Return text_src.Text.Count()
+        Return text_dst.Text.Count()
     End Function
 #End Region
 
