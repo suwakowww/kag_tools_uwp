@@ -329,7 +329,16 @@ namespace kag_tools_ui
         #region 写入修改到列表
         private void Text_dst_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if ((sender as TextBox).Text != "")
+            //TextChanged 本来为检测到文本内容变化时触发
+            //但由于有个叫做输入法的东西，导致触发过于频繁
+            //于是转移写入修改的方法了。
+            countword();
+        }
+
+        //由于频繁地修改 List 可能会导致崩溃，于是将写入修改改为按回车键触发。
+        private void Text_dst_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if ((sender as TextBox).Text != "" && e.Key.ToString() == "Enter")
             {
                 //由于引入了“仅显示文本”，这里需要对索引值重新定位
                 int realindex;
@@ -351,7 +360,6 @@ namespace kag_tools_ui
                     perline[realindex].texts_dst = text_dst2.Text;
                     text_dst.Text = text_dst2.Text;
                 }
-                countword();
             }
         }
         #endregion

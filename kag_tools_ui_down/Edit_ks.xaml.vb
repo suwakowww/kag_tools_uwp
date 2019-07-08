@@ -246,21 +246,30 @@ Public NotInheritable Class Edit_ks
 
 #Region "写入修改到列表"
     Private Sub Text_dst_TextChanged(ByVal sender As Object, e As TextChangedEventArgs)
-        '由于引入了“仅显示文本”，这里需要对索引值重新定位
-        Dim realindex As Integer
-        If textonly = True Then
-            realindex = filter_perline(text_list.SelectedIndex).line_num
-        Else
-            realindex = perline(text_list.SelectedIndex).line_num
-        End If
-        If CType(sender, TextBox).Name = "text_dst" Then
-            perline(realindex).texts_dst = text_dst.Text
-            text_dst2.Text = text_dst.Text
-        Else
-            perline(realindex).texts_dst = text_dst2.Text
-            text_dst.Text = text_dst2.Text
-        End If
+        'TextChanged 本来为检测到文本内容变化时触发
+        '但由于有个叫做输入法的东西，导致触发过于频繁
+        '于是转移写入修改的方法了。
         countword()
+    End Sub
+
+    '由于频繁地修改 List 可能会导致崩溃，于是将写入修改改为按回车键触发。
+    Private Sub Text_dst_KeyUp(sender As Object, e As KeyRoutedEventArgs)
+        If CType(sender, TextBox).Text <> "" AndAlso e.Key.ToString() = "Enter" Then
+            '由于引入了“仅显示文本”，这里需要对索引值重新定位
+            Dim realindex As Integer
+            If textonly = True Then
+                realindex = filter_perline(text_list.SelectedIndex).line_num
+            Else
+                realindex = perline(text_list.SelectedIndex).line_num
+            End If
+            If CType(sender, TextBox).Name = "text_dst" Then
+                perline(realindex).texts_dst = text_dst.Text
+                text_dst2.Text = text_dst.Text
+            Else
+                perline(realindex).texts_dst = text_dst2.Text
+                text_dst.Text = text_dst2.Text
+            End If
+        End If
     End Sub
 #End Region
 
