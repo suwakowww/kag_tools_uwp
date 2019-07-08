@@ -269,6 +269,11 @@ Public NotInheritable Class Edit_ks
                 perline(realindex).texts_dst = text_dst2.Text
                 text_dst.Text = text_dst2.Text
             End If
+
+            '写入修改后，自动跳转到下一行文本
+            If text_list.SelectedIndex <> text_list.Items.Count - 1 Then
+                text_list.SelectedIndex = text_list.SelectedIndex + 1
+            End If
         End If
     End Sub
 #End Region
