@@ -314,15 +314,34 @@ namespace kag_tools_ui
                     }
                 }
             }
-            countword();
+            countword(sender);
         }
         #endregion
 
         #region 字数统计
-        private void countword()
+        private void countword(object sender)
         {
-            win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
-            win_page_size2.Text = win_page_size.Text;
+            //判定sender的类型
+            if (sender.GetType() == typeof(TextBox))
+            {
+                //定义一个notsender，作为另外的一个控件。
+                object notsender;
+                if ((sender as TextBox).Name.ToString() == "text_dst")
+                {
+                    notsender = text_dst2;
+                    win_page_size.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count());
+                    win_page_size2.Text = win_page_size.Text;
+                    (notsender as TextBox).Text = (sender as TextBox).Text;
+                }
+                else if((sender as TextBox).Name.ToString()=="text_dst2")
+                {
+                    notsender = text_dst;
+                    win_page_size2.Text = string.Format("原文：{0} 字，译文：{1} 字", text_src2.Text.Count(), text_dst2.Text.Count());
+                    win_page_size.Text = win_page_size2.Text;
+                    (notsender as TextBox).Text = (sender as TextBox).Text;
+                }
+                
+            }
         }
         #endregion
 
@@ -332,7 +351,7 @@ namespace kag_tools_ui
             //TextChanged 本来为检测到文本内容变化时触发
             //但由于有个叫做输入法的东西，导致触发过于频繁
             //于是转移写入修改的方法了。
-            countword();
+            countword(sender);
         }
 
         //由于频繁地修改 List 可能会导致崩溃，于是将写入修改改为按回车键触发。
@@ -425,7 +444,7 @@ namespace kag_tools_ui
                     dicts1.ItemsSource = filter_dict;
                     dicts2.ItemsSource = filter_dict;
                 }
-                countword();
+                countword(sender);
             }
         }
         #endregion

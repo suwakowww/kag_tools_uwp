@@ -231,16 +231,30 @@ Public NotInheritable Class Edit_ks
                 End If
             End If
         End If
-        countword()
+        countword(sender)
     End Sub
 
 
 #End Region
 
 #Region "字数统计"
-    Private Sub countword()
-        win_page_size.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count())
-        win_page_size2.Text = win_page_size.Text
+    Private Sub countword(ByVal sender As Object)
+        '判断sender的类型
+        If sender.GetType Is GetType(TextBox) Then
+            '定义一个notsender，作为另外的一个控件。
+            Dim notsender As Object
+            If CType(sender, TextBox).Name = "text_dst" Then
+                notsender = text_dst2
+                win_page_size.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count())
+                win_page_size2.Text = win_page_size.Text
+                CType(notsender, TextBox).Text = CType(sender, TextBox).Text
+            ElseIf CType(sender, textbox).Name = "text_dst2" Then
+                notsender = text_dst
+                win_page_size2.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src2.Text.Count(), text_dst2.Text.Count())
+                win_page_size.Text = win_page_size2.Text
+                CType(notsender, TextBox).Text = CType(sender, TextBox).Text
+            End If
+        End If
     End Sub
 #End Region
 
@@ -249,7 +263,7 @@ Public NotInheritable Class Edit_ks
         'TextChanged 本来为检测到文本内容变化时触发
         '但由于有个叫做输入法的东西，导致触发过于频繁
         '于是转移写入修改的方法了。
-        countword()
+        countword(sender)
     End Sub
 
     '由于频繁地修改 List 可能会导致崩溃，于是将写入修改改为按回车键触发。
@@ -322,7 +336,7 @@ Public NotInheritable Class Edit_ks
                 dicts1.ItemsSource = filter_dict
                 dicts2.ItemsSource = filter_dict
             End If
-            countword()
+            countword(sender)
         End If
     End Sub
 #End Region
