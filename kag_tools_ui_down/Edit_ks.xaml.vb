@@ -240,7 +240,7 @@ Public NotInheritable Class Edit_ks
 #Region "字数统计"
     Private Sub countword(ByVal sender As Object)
         '判断sender的类型
-        If sender.GetType Is GetType(TextBox) Then
+        If sender.GetType() Is GetType(TextBox) Then
             '定义一个notsender，作为另外的一个控件。
             Dim notsender As Object
             If CType(sender, TextBox).Name = "text_dst" Then
@@ -248,7 +248,7 @@ Public NotInheritable Class Edit_ks
                 win_page_size.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src.Text.Count(), text_dst.Text.Count())
                 win_page_size2.Text = win_page_size.Text
                 CType(notsender, TextBox).Text = CType(sender, TextBox).Text
-            ElseIf CType(sender, textbox).Name = "text_dst2" Then
+            ElseIf CType(sender, TextBox).Name = "text_dst2" Then
                 notsender = text_dst
                 win_page_size2.Text = String.Format("原文：{0} 字，译文：{1} 字", text_src2.Text.Count(), text_dst2.Text.Count())
                 win_page_size.Text = win_page_size2.Text
