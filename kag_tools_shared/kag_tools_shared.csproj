@@ -125,7 +125,7 @@
     <Compile Include="loadsave.cs" />
     <Compile Include="nav_item.cs" />
     <Compile Include="parse_bytes.cs" />
-    <Compile Include="parse_perline.cs" />
+    <Compile Include="parse_ks_perline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\kag_tools_shared.rd.xml" />
   </ItemGroup>

@@ -18,7 +18,7 @@ namespace kag_tools_shared
         /// </summary>
         /// <param name="perline">传入需要保存的 List</param>
         /// <returns>string result（保存情况）</returns>
-        public async Task<string> save_ksasync(List<perlines> perline)
+        public async Task<string> save_ksasync(List<ks_perlines> perline)
         {
             FileSavePicker fos = new FileSavePicker();
             fos.FileTypeChoices.Add("KAG Script", new List<string> { ".ks" });

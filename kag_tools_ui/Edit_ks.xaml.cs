@@ -26,10 +26,10 @@ namespace kag_tools_ui
     /// </summary>
     public sealed partial class Edit_ks : Page
     {
-        List<perlines> perline;
+        List<ks_perlines> perline;
         List<dictlist> dicts;
         bool textonly = true;   //仅显示文本
-        List<perlines> filter_perline;
+        List<ks_perlines> filter_perline;
 
         public Edit_ks()
         {
@@ -114,7 +114,7 @@ namespace kag_tools_ui
         {
             loadsave loadsave = new loadsave();
             parse_bytes parse_bytes = new parse_bytes();
-            parse_perline parse_perline = new parse_perline();
+            parse_ks_perline parse_perline = new parse_ks_perline();
 
             // 打开文件
             files files = await loadsave.load_ksasync();
@@ -257,7 +257,7 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list.SelectedIndex = text_list.SelectedIndex + 1;
-                        if (((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                        if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex == text_list.Items.Count - 1)
                             break;
                     }
                     if (text_list.SelectedIndex >= text_list.Items.Count - 1)
@@ -271,7 +271,7 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list2.SelectedIndex = text_list2.SelectedIndex + 1;
-                        if (((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex == text_list2.Items.Count - 1)
+                        if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex == text_list2.Items.Count - 1)
                             break;
                     }
                     if (text_list2.SelectedIndex >= text_list2.Items.Count - 1)
@@ -290,7 +290,7 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list.SelectedIndex = text_list.SelectedIndex - 1;
-                        if (((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex <= 0)
+                        if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex <= 0)
                             break;
                     }
                     if (text_list.SelectedIndex <= 0)
@@ -304,7 +304,7 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list2.SelectedIndex = text_list2.SelectedIndex - 1;
-                        if (((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex <= 0)
+                        if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex <= 0)
                             break;
                     }
                     if (text_list2.SelectedIndex <= 0)
@@ -401,15 +401,15 @@ namespace kag_tools_ui
                 //根据所选中的控件，对另一个隐藏的控件进行控制
                 if ((sender as ListView).Name == "text_list" && (sender as ListView).SelectedItem != null)
                 {
-                    text_src.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                    text_dst.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    text_src.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                    text_dst.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
                     text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
                     texts = text_src.Text;
                 }
                 else if ((sender as ListView).Name == "text_list2" && (sender as ListView).SelectedItem != null)
                 {
-                    text_src2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                    text_dst2.Text = ((kag_tools_shared.perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    text_src2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                    text_dst2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
                     text_list.SelectedIndex = (sender as ListView).SelectedIndex;
                     texts = text_src2.Text;
                 }

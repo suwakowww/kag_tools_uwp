@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media;
 
 namespace kag_tools_shared
 {
-    public class perlines
+    public class ks_perlines
     {
         public int line_num { get; set; }
         public string texts { get; set; }
@@ -20,11 +20,11 @@ namespace kag_tools_shared
         public Color text_cl { get; set; }
     }
 
-    public class parse_perline
+    public class parse_ks_perline
     {
-        public List<perlines> parsestr(string src)
+        public List<ks_perlines> parsestr(string src)
         {
-            List<perlines> perlinetext = new List<perlines>();
+            List<ks_perlines> perlinetext = new List<ks_perlines>();
 
             //按行拆分
             string[] perlinetext2 = src.Split(new string[] { "\r\n" }, StringSplitOptions.None);
@@ -86,14 +86,14 @@ namespace kag_tools_shared
                 }
 
                 //整理好之后，添加到一个列表中
-                perlinetext.Add(new perlines { line_num=i, texts = tmp, texts_dst = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
+                perlinetext.Add(new ks_perlines { line_num=i, texts = tmp, texts_dst = tmp, texttype = texttypes, text_cd = tmp_cd, text_cl = tmp_cl });
             }
             return perlinetext;
         }
 
-        public List<perlines> filter_perline(List<perlines> perline)
+        public List<ks_perlines> filter_perline(List<ks_perlines> perline)
         {
-            List<perlines> filtered = new List<perlines>();
+            List<ks_perlines> filtered = new List<ks_perlines>();
             for (int i = 0; i < perline.Count; i++)
             {
                 if (perline[i].texttype == 's' || perline[i].texttype == 't')

@@ -8,10 +8,10 @@ Imports Windows.System
 Public NotInheritable Class Edit_ks
     Inherits Page
 
-    Dim perline As List(Of perlines)
+    Dim perline As List(Of ks_perlines)
     Dim dicts As List(Of dictlist)
     Dim textonly As Boolean = True
-    Dim filter_perline As List(Of perlines)
+    Dim filter_perline As List(Of ks_perlines)
 
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
         checkwidth(Window.Current.Bounds.Width, True)
@@ -64,7 +64,7 @@ Public NotInheritable Class Edit_ks
     Private Async Sub Import_ks_Click(sender As Object, e As RoutedEventArgs)
         Dim loadsave As New loadsave()
         Dim parse_bytes As New parse_bytes()
-        Dim parse_perline As New parse_perline()
+        Dim parse_perline As New parse_ks_perline()
 
         '打开文件
         Dim files As files = Await loadsave.load_ksasync()
@@ -184,7 +184,7 @@ Public NotInheritable Class Edit_ks
             If large_view.Visibility = Visibility.Visible Then
                 While True
                     text_list.SelectedIndex = text_list.SelectedIndex + 1
-                    If TryCast(text_list.SelectedItem, kag_tools_shared.perlines).texttype = "t" OrElse TryCast(text_list.SelectedItem, kag_tools_shared.perlines).texttype = "s" OrElse text_list.SelectedIndex = text_list.Items.Count - 1 Then
+                    If TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex = text_list.Items.Count - 1 Then
                         Exit While
                     End If
                 End While
@@ -195,7 +195,7 @@ Public NotInheritable Class Edit_ks
             Else
                 While True
                     text_list2.SelectedIndex = text_list2.SelectedIndex + 1
-                    If CType(text_list2.SelectedItem, kag_tools_shared.perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.perlines).texttype = "s" OrElse text_list2.Items.Count - 1 Then
+                    If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.Items.Count - 1 Then
                         Exit While
                     End If
                 End While
@@ -210,7 +210,7 @@ Public NotInheritable Class Edit_ks
             If large_view.Visibility = Visibility.Visible Then
                 While True
                     text_list.SelectedIndex = text_list.SelectedIndex - 1
-                    If CType(text_list.SelectedItem, kag_tools_shared.perlines).texttype = "t" OrElse CType(text_list.SelectedItem, kag_tools_shared.perlines).texttype = "s" OrElse text_list.SelectedIndex <= 0 Then
+                    If CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex <= 0 Then
                         Exit While
                     End If
                 End While
@@ -221,7 +221,7 @@ Public NotInheritable Class Edit_ks
             Else
                 While True
                     text_list2.SelectedIndex = text_list2.SelectedIndex - 1
-                    If CType(text_list2.SelectedItem, kag_tools_shared.perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.perlines).texttype = "s" OrElse text_list2.SelectedIndex <= 0 Then
+                    If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.SelectedIndex <= 0 Then
                         Exit While
                     End If
                 End While
@@ -301,13 +301,13 @@ Public NotInheritable Class Edit_ks
 
             '根据所选中的控件，对另一个隐藏的空间进行控制
             If CType(sender, ListView).Name = "text_list" AndAlso CType(sender, ListView).SelectedItem IsNot Nothing Then
-                text_src.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.perlines).texts
-                text_dst.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.perlines).texts_dst
+                text_src.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
+                text_dst.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
                 text_list2.SelectedIndex = CType(sender, ListView).SelectedIndex
                 texts = text_src.Text
             ElseIf CType(sender, ListView).Name = "text_list2" AndAlso CType(sender, ListView).Selecteditem IsNot Nothing Then
-                text_src2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.perlines).texts
-                text_dst2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.perlines).texts_dst
+                text_src2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
+                text_dst2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
                 text_list.SelectedIndex = CType(sender, ListView).SelectedIndex
                 texts = text_src2.Text
             End If
