@@ -8,10 +8,10 @@ Imports Windows.System
 Public NotInheritable Class Edit_ks
     Inherits Page
 
-    Dim perline As List(Of ks_perlines)
+    Dim ks_perline As List(Of ks_perlines)
     Dim dicts As List(Of dictlist)
     Dim textonly As Boolean = True
-    Dim filter_perline As List(Of ks_perlines)
+    Dim filter_ks_perline As List(Of ks_perlines)
 
     Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
         checkwidth(Window.Current.Bounds.Width, True)
@@ -85,29 +85,29 @@ Public NotInheritable Class Edit_ks
 
             '判断 .ks 文件类型
             If files.filename.Contains(".ks") Then
-                Dim parse_perline As New parse_ks_perline()
-                perline = parse_perline.parsestr(src2)
+                Dim parse_ks_perline As New parse_ks_perline()
+                ks_perline = parse_ks_perline.parsestr(src2)
 
                 '按行拆分文本
-                For i = 0 To perline.Count - 1
+                For i = 0 To ks_perline.Count - 1
                     '根据每行内容，进行上色
                     '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
                     If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
-                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+                        ks_perline(i).textcolor = New SolidColorBrush(ks_perline(i).text_cd)
                     Else
-                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                        ks_perline(i).textcolor = New SolidColorBrush(ks_perline(i).text_cl)
                     End If
                 Next
 
                 If textonly = True Then
                     '过滤代码等内容，只留下文本
-                    filter_perline = parse_perline.filter_perline(perline)
-                    text_list.ItemsSource = filter_perline
-                    text_list2.ItemsSource = filter_perline
+                    filter_ks_perline = parse_ks_perline.filter_perline(ks_perline)
+                    text_list.ItemsSource = filter_ks_perline
+                    text_list2.ItemsSource = filter_ks_perline
                 Else
                     '原样输出
-                    text_list.ItemsSource = perline
-                    text_list2.ItemsSource = perline
+                    text_list.ItemsSource = ks_perline
+                    text_list2.ItemsSource = ks_perline
                 End If
 
                 file_info.Text = files.filename
@@ -137,7 +137,7 @@ Public NotInheritable Class Edit_ks
 #Region "保存 .ks 文件"
     Private Async Sub Output_ks_Click(sender As Object, e As RoutedEventArgs)
         Dim loadsave As New loadsave()
-        Dim status As String = Await loadsave.save_ksasync(perline)
+        Dim status As String = Await loadsave.save_ksasync(ks_perline)
         Dim result As New ContentDialog() With
             {
             .Title = "结果",
@@ -276,15 +276,15 @@ Public NotInheritable Class Edit_ks
             '由于引入了“仅显示文本”，这里需要对索引值重新定位
             Dim realindex As Integer
             If textonly = True Then
-                realindex = filter_perline(text_list.SelectedIndex).line_num
+                realindex = filter_ks_perline(text_list.SelectedIndex).line_num
             Else
-                realindex = perline(text_list.SelectedIndex).line_num
+                realindex = ks_perline(text_list.SelectedIndex).line_num
             End If
             If CType(sender, TextBox).Name = "text_dst" Then
-                perline(realindex).texts_dst = text_dst.Text
+                ks_perline(realindex).texts_dst = text_dst.Text
                 text_dst2.Text = text_dst.Text
             Else
-                perline(realindex).texts_dst = text_dst2.Text
+                ks_perline(realindex).texts_dst = text_dst2.Text
                 text_dst.Text = text_dst2.Text
             End If
 

@@ -26,10 +26,10 @@ namespace kag_tools_ui
     /// </summary>
     public sealed partial class Edit_ks : Page
     {
-        List<ks_perlines> perline;
+        List<ks_perlines> ks_perline;
         List<dictlist> dicts;
         bool textonly = true;   //仅显示文本
-        List<ks_perlines> filter_perline;
+        List<ks_perlines> filter_ks_perline;
 
         public Edit_ks()
         {
@@ -139,34 +139,34 @@ namespace kag_tools_ui
                 //判断 .ks 文件类型
                 if (files.filename.Contains(".ks"))
                 {
-                    parse_ks_perline parse_perline = new parse_ks_perline();
-                    perline = parse_perline.parsestr(src2);
+                    parse_ks_perline parse_ks_perline = new parse_ks_perline();
+                    ks_perline = parse_ks_perline.parsestr(src2);
 
                     //按行拆分文本
 
-                    for (int i = 0; i < perline.Count; i++)
+                    for (int i = 0; i < ks_perline.Count; i++)
                     {
 
                         //根据每行内容，进行上色
                         if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
-                            perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                            ks_perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? ks_perline[i].text_cd : ks_perline[i].text_cl);
                         else
                             //由于 this.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
-                            perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                            ks_perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? ks_perline[i].text_cd : ks_perline[i].text_cl);
                     }
 
                     if (textonly == true)
                     {
                         //过滤代码等内容，只留下文本
-                        filter_perline = parse_perline.filter_perline(perline);
-                        text_list.ItemsSource = filter_perline;
-                        text_list2.ItemsSource = filter_perline;
+                        filter_ks_perline = parse_ks_perline.filter_perline(ks_perline);
+                        text_list.ItemsSource = filter_ks_perline;
+                        text_list2.ItemsSource = filter_ks_perline;
                     }
                     else
                     {
                         //原样输出
-                        text_list.ItemsSource = perline;
-                        text_list2.ItemsSource = perline;
+                        text_list.ItemsSource = ks_perline;
+                        text_list2.ItemsSource = ks_perline;
                     }
 
 
@@ -200,7 +200,7 @@ namespace kag_tools_ui
         private async void Output_ks_Click(object sender, RoutedEventArgs e)
         {
             loadsave loadsave = new loadsave();
-            string status = await loadsave.save_ksasync(perline);
+            string status = await loadsave.save_ksasync(ks_perline);
             ContentDialog result = new ContentDialog()
             {
                 Title = "结果",
@@ -369,20 +369,20 @@ namespace kag_tools_ui
                 int realindex;
                 if (textonly == true)
                 {
-                    realindex = filter_perline[text_list.SelectedIndex].line_num;
+                    realindex = filter_ks_perline[text_list.SelectedIndex].line_num;
                 }
                 else
                 {
-                    realindex = perline[text_list.SelectedIndex].line_num;
+                    realindex = ks_perline[text_list.SelectedIndex].line_num;
                 }
                 if ((sender as TextBox).Name == "text_dst")
                 {
-                    perline[realindex].texts_dst = text_dst.Text;
+                    ks_perline[realindex].texts_dst = text_dst.Text;
                     text_dst2.Text = text_dst.Text;
                 }
                 else
                 {
-                    perline[realindex].texts_dst = text_dst2.Text;
+                    ks_perline[realindex].texts_dst = text_dst2.Text;
                     text_dst.Text = text_dst2.Text;
                 }
 
