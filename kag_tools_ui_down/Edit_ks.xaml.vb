@@ -64,7 +64,6 @@ Public NotInheritable Class Edit_ks
     Private Async Sub Import_ks_Click(sender As Object, e As RoutedEventArgs)
         Dim loadsave As New loadsave()
         Dim parse_bytes As New parse_bytes()
-        Dim parse_perline As New parse_ks_perline()
 
         '打开文件
         Dim files As files = Await loadsave.load_ksasync()
@@ -83,49 +82,54 @@ Public NotInheritable Class Edit_ks
 
             '还原二进制为文本
             src2 = parse_bytes.byte2str(files.srcode, encoding)
-            perline = parse_perline.parsestr(src2)
 
-            '按行拆分文本
-            For i = 0 To perline.Count - 1
-                '根据每行内容，进行上色
-                '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
-                If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
-                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+            '判断 .ks 文件类型
+            If files.filename.Contains(".ks") Then
+                Dim parse_perline As New parse_ks_perline()
+                perline = parse_perline.parsestr(src2)
+
+                '按行拆分文本
+                For i = 0 To perline.Count - 1
+                    '根据每行内容，进行上色
+                    '由于 Me.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                    If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
+                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cd)
+                    Else
+                        perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                    End If
+                Next
+
+                If textonly = True Then
+                    '过滤代码等内容，只留下文本
+                    filter_perline = parse_perline.filter_perline(perline)
+                    text_list.ItemsSource = filter_perline
+                    text_list2.ItemsSource = filter_perline
                 Else
-                    perline(i).textcolor = New SolidColorBrush(perline(i).text_cl)
+                    '原样输出
+                    text_list.ItemsSource = perline
+                    text_list2.ItemsSource = perline
                 End If
-            Next
 
-            If textonly = True Then
-                '过滤代码等内容，只留下文本
-                filter_perline = parse_perline.filter_perline(perline)
-                text_list.ItemsSource = filter_perline
-                text_list2.ItemsSource = filter_perline
+                file_info.Text = files.filename
+                bot_p_n.IsEnabled = True
+                bot_p_n2.IsEnabled = True
+                text_src.IsEnabled = True
+                text_src2.IsEnabled = True
+                text_dst.IsEnabled = True
+                text_dst2.IsEnabled = True
             Else
-                '原样输出
-                text_list.ItemsSource = perline
-                text_list2.ItemsSource = perline
+                '如果打开文件的过程被中断（比如：按下了“取消”键），会返回“empty”。
+                '由于发现打开空白文件的时候会发生错误，所以这里追加判断打开文件的情况。
+                Dim err_msg As String = If(files.filename = "empty", "没有打开文件。", String.Format("打开了空白的文件：{0}。", files.filename))
+
+                Dim err_dlg As New ContentDialog With
+                    {
+                    .Title = "发生错误",
+                    .Content = err_msg,
+                    .PrimaryButtonText = "关闭"
+                    }
+                Await err_dlg.ShowAsync()
             End If
-
-            file_info.Text = files.filename
-            bot_p_n.IsEnabled = True
-            bot_p_n2.IsEnabled = True
-            text_src.IsEnabled = True
-            text_src2.IsEnabled = True
-            text_dst.IsEnabled = True
-            text_dst2.IsEnabled = True
-        Else
-            '如果打开文件的过程被中断（比如：按下了“取消”键），会返回“empty”。
-            '由于发现打开空白文件的时候会发生错误，所以这里追加判断打开文件的情况。
-            Dim err_msg As String = If(files.filename = "empty", "没有打开文件。", String.Format("打开了空白的文件：{0}。", files.filename))
-
-            Dim err_dlg As New ContentDialog With
-                {
-                .Title = "发生错误",
-                .Content = err_msg,
-                .PrimaryButtonText = "关闭"
-                }
-            Await err_dlg.ShowAsync()
         End If
     End Sub
 #End Region

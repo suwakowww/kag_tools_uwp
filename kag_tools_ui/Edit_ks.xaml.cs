@@ -114,7 +114,7 @@ namespace kag_tools_ui
         {
             loadsave loadsave = new loadsave();
             parse_bytes parse_bytes = new parse_bytes();
-            parse_ks_perline parse_perline = new parse_ks_perline();
+            
 
             // 打开文件
             files files = await loadsave.load_ksasync();
@@ -135,57 +135,63 @@ namespace kag_tools_ui
 
                 //还原二进制为文本
                 src2 = parse_bytes.byte2str(files.srcode, encoding);
-                perline = parse_perline.parsestr(src2);
 
-                //按行拆分文本
-
-                for (int i = 0; i < perline.Count; i++)
+                //判断 .ks 文件类型
+                if (files.filename.Contains(".ks"))
                 {
+                    parse_ks_perline parse_perline = new parse_ks_perline();
+                    perline = parse_perline.parsestr(src2);
 
-                    //根据每行内容，进行上色
-                    if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
-                        perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                    //按行拆分文本
+
+                    for (int i = 0; i < perline.Count; i++)
+                    {
+
+                        //根据每行内容，进行上色
+                        if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
+                            perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                        else
+                            //由于 this.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                            perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
+                    }
+
+                    if (textonly == true)
+                    {
+                        //过滤代码等内容，只留下文本
+                        filter_perline = parse_perline.filter_perline(perline);
+                        text_list.ItemsSource = filter_perline;
+                        text_list2.ItemsSource = filter_perline;
+                    }
                     else
-                        //由于 this.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
-                        perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? perline[i].text_cd : perline[i].text_cl);
-                }
+                    {
+                        //原样输出
+                        text_list.ItemsSource = perline;
+                        text_list2.ItemsSource = perline;
+                    }
 
-                if (textonly == true)
-                {
-                    //过滤代码等内容，只留下文本
-                    filter_perline = parse_perline.filter_perline(perline);
-                    text_list.ItemsSource = filter_perline;
-                    text_list2.ItemsSource = filter_perline;
+
+                    file_info.Text = files.filename;
+                    bot_p_n.IsEnabled = true;
+                    bot_p_n2.IsEnabled = true;
+                    text_src.IsEnabled = true;
+                    text_src2.IsEnabled = true;
+                    text_dst.IsEnabled = true;
+                    text_dst2.IsEnabled = true;
                 }
                 else
                 {
-                    //原样输出
-                    text_list.ItemsSource = perline;
-                    text_list2.ItemsSource = perline;
+                    //如果打开文件的过程被中断（比如：按下了“取消”键），会返回“empty”。
+                    //由于发现打开空白文件的时候会发生错误，所以这里追加判断打开文件的情况。
+                    string err_msg = files.filename == "empty" ? "没有打开文件。" : string.Format("打开了空白的文件：{0}。", files.filename);
+
+                    ContentDialog err_dlg = new ContentDialog()
+                    {
+                        Title = "发生错误",
+                        Content = err_msg,
+                        PrimaryButtonText = "关闭"
+                    };
+                    await err_dlg.ShowAsync();
                 }
-
-
-                file_info.Text = files.filename;
-                bot_p_n.IsEnabled = true;
-                bot_p_n2.IsEnabled = true;
-                text_src.IsEnabled = true;
-                text_src2.IsEnabled = true;
-                text_dst.IsEnabled = true;
-                text_dst2.IsEnabled = true;
-            }
-            else
-            {
-                //如果打开文件的过程被中断（比如：按下了“取消”键），会返回“empty”。
-                //由于发现打开空白文件的时候会发生错误，所以这里追加判断打开文件的情况。
-                string err_msg = files.filename == "empty" ? "没有打开文件。" : string.Format("打开了空白的文件：{0}。", files.filename);
-
-                ContentDialog err_dlg = new ContentDialog()
-                {
-                    Title = "发生错误",
-                    Content = err_msg,
-                    PrimaryButtonText = "关闭"
-                };
-                await err_dlg.ShowAsync();
             }
         }
         #endregion
