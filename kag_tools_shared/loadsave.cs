@@ -63,6 +63,7 @@ namespace kag_tools_shared
             // 打开文件
             FileOpenPicker fop = new FileOpenPicker();
             fop.FileTypeFilter.Add(".ks");
+            fop.FileTypeFilter.Add(".txt");
             StorageFile sf = await fop.PickSingleFileAsync();
             byte[] src;
             files files;

@@ -124,6 +124,7 @@
     <Compile Include="loaddict.cs" />
     <Compile Include="loadsave.cs" />
     <Compile Include="nav_item.cs" />
+    <Compile Include="parse_bgi_perline.cs" />
     <Compile Include="parse_bytes.cs" />
     <Compile Include="parse_ks_perline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

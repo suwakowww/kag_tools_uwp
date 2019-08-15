@@ -27,6 +27,7 @@ namespace kag_tools_ui
     public sealed partial class Edit_ks : Page
     {
         List<ks_perlines> ks_perline;
+        List<bgi_perlines> bgi_perline;
         List<dictlist> dicts;
         bool textonly = true;   //仅显示文本
         List<ks_perlines> filter_ks_perline;
@@ -155,6 +156,8 @@ namespace kag_tools_ui
                             ks_perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? ks_perline[i].text_cd : ks_perline[i].text_cl);
                     }
 
+                    file_info.Text = files.filename;
+
                     if (textonly == true)
                     {
                         //过滤代码等内容，只留下文本
@@ -169,8 +172,34 @@ namespace kag_tools_ui
                         text_list2.ItemsSource = ks_perline;
                     }
 
+                    bot_p_n.IsEnabled = true;
+                    bot_p_n2.IsEnabled = true;
+                    text_src.IsEnabled = true;
+                    text_src2.IsEnabled = true;
+                    text_dst.IsEnabled = true;
+                    text_dst2.IsEnabled = true;
+                }
+                else if(files.filename.Contains(".out.txt"))
+                {
+                    parse_bgi_perline parse_bgi_perline = new parse_bgi_perline();
+                    bgi_perline = parse_bgi_perline.parsestr(src2);
 
                     file_info.Text = files.filename;
+
+                    text_list.ItemsSource = bgi_perline;
+                    text_list2.ItemsSource = bgi_perline;
+
+                    for (int i = 0; i < bgi_perline.Count; i++)
+                    {
+
+                        //根据每行内容，进行上色
+                        if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 5))
+                            bgi_perline[i].textcolor = new SolidColorBrush(this.ActualTheme == ElementTheme.Dark ? bgi_perline[i].text_cd : bgi_perline[i].text_cl);
+                        else
+                            //由于 this.RequestedTheme 会返回 ElementTheme.Default，故原方法不可用
+                            bgi_perline[i].textcolor = new SolidColorBrush(Application.Current.RequestedTheme == ApplicationTheme.Dark ? bgi_perline[i].text_cd : bgi_perline[i].text_cl);
+                    }
+
                     bot_p_n.IsEnabled = true;
                     bot_p_n2.IsEnabled = true;
                     text_src.IsEnabled = true;
@@ -263,8 +292,17 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list.SelectedIndex = text_list.SelectedIndex + 1;
-                        if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex == text_list.Items.Count - 1)
-                            break;
+                        if (file_info.Text.Contains(".ks"))
+                        {
+                            if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                                break;
+                        }
+                        else if(file_info.Text.Contains(".out.txt"))
+                        {
+                            if (((kag_tools_shared.bgi_perlines)text_list.SelectedItem).texttype == 't' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                                break;
+                        }
+                        else break;
                     }
                     if (text_list.SelectedIndex >= text_list.Items.Count - 1)
                     {
@@ -277,8 +315,17 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list2.SelectedIndex = text_list2.SelectedIndex + 1;
-                        if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex == text_list2.Items.Count - 1)
-                            break;
+                        if (file_info.Text.Contains(".ks"))
+                        {
+                            if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex == text_list2.Items.Count - 1)
+                                break;
+                        }
+                        else if (file_info.Text.Contains(".out.txt"))
+                        {
+                            if (((kag_tools_shared.bgi_perlines)text_list.SelectedItem).texttype == 't' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                                break;
+                        }
+                        else break;
                     }
                     if (text_list2.SelectedIndex >= text_list2.Items.Count - 1)
                     {
@@ -296,8 +343,17 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list.SelectedIndex = text_list.SelectedIndex - 1;
-                        if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex <= 0)
-                            break;
+                        if (file_info.Text.Contains(".ks"))
+                        {
+                            if (((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list.SelectedItem).texttype == 's' || text_list.SelectedIndex <= 0)
+                                break;
+                        }
+                        else if (file_info.Text.Contains(".out.txt"))
+                        {
+                            if (((kag_tools_shared.bgi_perlines)text_list.SelectedItem).texttype == 't' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                                break;
+                        }
+                        else break;
                     }
                     if (text_list.SelectedIndex <= 0)
                     {
@@ -310,8 +366,17 @@ namespace kag_tools_ui
                     while (true)
                     {
                         text_list2.SelectedIndex = text_list2.SelectedIndex - 1;
-                        if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex <= 0)
-                            break;
+                        if (file_info.Text.Contains(".ks"))
+                        {
+                            if (((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 't' || ((kag_tools_shared.ks_perlines)text_list2.SelectedItem).texttype == 's' || text_list2.SelectedIndex <= 0)
+                                break;
+                        }
+                        else if (file_info.Text.Contains(".out.txt"))
+                        {
+                            if (((kag_tools_shared.bgi_perlines)text_list.SelectedItem).texttype == 't' || text_list.SelectedIndex == text_list.Items.Count - 1)
+                                break;
+                        }
+                        else break;
                     }
                     if (text_list2.SelectedIndex <= 0)
                     {
@@ -407,15 +472,31 @@ namespace kag_tools_ui
                 //根据所选中的控件，对另一个隐藏的控件进行控制
                 if ((sender as ListView).Name == "text_list" && (sender as ListView).SelectedItem != null)
                 {
-                    text_src.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                    text_dst.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    if (file_info.Text.Contains(".ks"))
+                    {
+                        text_src.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                        text_dst.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    }
+                    else if(file_info.Text.Contains(".out.txt"))
+                    {
+                        text_src.Text = ((kag_tools_shared.bgi_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                        text_dst.Text = ((kag_tools_shared.bgi_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    }
                     text_list2.SelectedIndex = (sender as ListView).SelectedIndex;
                     texts = text_src.Text;
                 }
                 else if ((sender as ListView).Name == "text_list2" && (sender as ListView).SelectedItem != null)
                 {
-                    text_src2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
-                    text_dst2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    if (file_info.Text.Contains(".ks"))
+                    {
+                        text_src2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                        text_dst2.Text = ((kag_tools_shared.ks_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    }
+                    else if (file_info.Text.Contains(".out.txt"))
+                    {
+                        text_src2.Text = ((kag_tools_shared.bgi_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts;
+                        text_dst2.Text = ((kag_tools_shared.bgi_perlines)((Windows.UI.Xaml.Controls.Primitives.Selector)sender).SelectedItem).texts_dst;
+                    }
                     text_list.SelectedIndex = (sender as ListView).SelectedIndex;
                     texts = text_src2.Text;
                 }
