@@ -447,23 +447,40 @@ namespace kag_tools_ui
             {
                 //由于引入了“仅显示文本”，这里需要对索引值重新定位
                 int realindex;
-                if (textonly == true)
+                if (file_info.Text.Contains(".ks"))
                 {
-                    realindex = filter_ks_perline[text_list.SelectedIndex].line_num;
+                    if (textonly == true)
+                    {
+                        realindex = filter_ks_perline[text_list.SelectedIndex].line_num;
+                    }
+                    else
+                    {
+                        realindex = ks_perline[text_list.SelectedIndex].line_num;
+                    }
+                    if ((sender as TextBox).Name == "text_dst")
+                    {
+                        ks_perline[realindex].texts_dst = text_dst.Text;
+                        text_dst2.Text = text_dst.Text;
+                    }
+                    else
+                    {
+                        ks_perline[realindex].texts_dst = text_dst2.Text;
+                        text_dst.Text = text_dst2.Text;
+                    }
                 }
-                else
+                else if(file_info.Text.Contains(".out.txt"))
                 {
-                    realindex = ks_perline[text_list.SelectedIndex].line_num;
-                }
-                if ((sender as TextBox).Name == "text_dst")
-                {
-                    ks_perline[realindex].texts_dst = text_dst.Text;
-                    text_dst2.Text = text_dst.Text;
-                }
-                else
-                {
-                    ks_perline[realindex].texts_dst = text_dst2.Text;
-                    text_dst.Text = text_dst2.Text;
+                    realindex = bgi_perline[text_list.SelectedIndex].line_num;
+                    if ((sender as TextBox).Name == "text_dst")
+                    {
+                        bgi_perline[realindex].texts_dst = text_dst.Text;
+                        text_dst2.Text = text_dst.Text;
+                    }
+                    else
+                    {
+                        bgi_perline[realindex].texts_dst = text_dst2.Text;
+                        text_dst.Text = text_dst2.Text;
+                    }
                 }
 
                 //写入修改后，自动跳转到下一行文本

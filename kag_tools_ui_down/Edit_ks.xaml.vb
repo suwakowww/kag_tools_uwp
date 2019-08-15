@@ -345,24 +345,35 @@ Public NotInheritable Class Edit_ks
         If CType(sender, TextBox).Text <> "" AndAlso e.Key.ToString() = "Enter" Then
             '由于引入了“仅显示文本”，这里需要对索引值重新定位
             Dim realindex As Integer
-            If textonly = True Then
-                realindex = filter_ks_perline(text_list.SelectedIndex).line_num
-            Else
-                realindex = ks_perline(text_list.SelectedIndex).line_num
-            End If
-            If CType(sender, TextBox).Name = "text_dst" Then
-                ks_perline(realindex).texts_dst = text_dst.Text
-                text_dst2.Text = text_dst.Text
-            Else
-                ks_perline(realindex).texts_dst = text_dst2.Text
-                text_dst.Text = text_dst2.Text
+            If (file_info.Text.Contains(".ks")) Then
+                If textonly = True Then
+                    realindex = filter_ks_perline(text_list.SelectedIndex).line_num
+                Else
+                    realindex = ks_perline(text_list.SelectedIndex).line_num
+                End If
+                If CType(sender, TextBox).Name = "text_dst" Then
+                    ks_perline(realindex).texts_dst = text_dst.Text
+                    text_dst2.Text = text_dst.Text
+                Else
+                    ks_perline(realindex).texts_dst = text_dst2.Text
+                    text_dst.Text = text_dst2.Text
+                End If
+            ElseIf (file_info.Text.Contains(".out.txt")) Then
+                realindex = bgi_perline(text_list.SelectedIndex).line_num
+                If CType(sender, TextBox).Name = "text_dst" Then
+                    bgi_perline(realindex).texts_dst = text_dst.Text
+                    text_dst2.Text = text_dst.Text
+                Else
+                    bgi_perline(realindex).texts_dst = text_dst2.Text
+                    text_dst.Text = text_dst2.Text
+                End If
             End If
 
             '写入修改后，自动跳转到下一行文本
             If text_list.SelectedIndex <> text_list.Items.Count - 1 Then
-                text_list.SelectedIndex = text_list.SelectedIndex + 1
+                    text_list.SelectedIndex = text_list.SelectedIndex + 1
+                End If
             End If
-        End If
     End Sub
 #End Region
 
