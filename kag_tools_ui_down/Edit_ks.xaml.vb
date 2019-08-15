@@ -9,6 +9,7 @@ Public NotInheritable Class Edit_ks
     Inherits Page
 
     Dim ks_perline As List(Of ks_perlines)
+    Dim bgi_perline As List(Of bgi_perlines)
     Dim dicts As List(Of dictlist)
     Dim textonly As Boolean = True
     Dim filter_ks_perline As List(Of ks_perlines)
@@ -99,6 +100,8 @@ Public NotInheritable Class Edit_ks
                     End If
                 Next
 
+                file_info.Text = files.filename
+
                 If textonly = True Then
                     '过滤代码等内容，只留下文本
                     filter_ks_perline = parse_ks_perline.filter_perline(ks_perline)
@@ -110,7 +113,30 @@ Public NotInheritable Class Edit_ks
                     text_list2.ItemsSource = ks_perline
                 End If
 
+                bot_p_n.IsEnabled = True
+                bot_p_n2.IsEnabled = True
+                text_src.IsEnabled = True
+                text_src2.IsEnabled = True
+                text_dst.IsEnabled = True
+                text_dst2.IsEnabled = True
+            ElseIf files.filename.Contains(".out.txt") Then
+                Dim parse_bgi_perline As New parse_bgi_perline()
+                bgi_perline = parse_bgi_perline.parsestr(src2)
+
                 file_info.Text = files.filename
+
+                text_list.ItemsSource = bgi_perline
+                text_list2.ItemsSource = bgi_perline
+
+                Dim i As Integer
+                For i = 0 To bgi_perline.Count - 1
+                    If Application.Current.RequestedTheme = ApplicationTheme.Dark Then
+                        bgi_perline(i).textcolor = New SolidColorBrush(bgi_perline(i).text_cd)
+                    Else
+                        bgi_perline(i).textcolor = New SolidColorBrush(bgi_perline(i).text_cl)
+                    End If
+                Next
+
                 bot_p_n.IsEnabled = True
                 bot_p_n2.IsEnabled = True
                 text_src.IsEnabled = True
@@ -137,7 +163,19 @@ Public NotInheritable Class Edit_ks
 #Region "保存 .ks 文件"
     Private Async Sub Output_ks_Click(sender As Object, e As RoutedEventArgs)
         Dim loadsave As New loadsave()
-        Dim status As String = Await loadsave.save_ksasync(ks_perline)
+        Dim savetext As New List(Of String)
+        If (file_info.Text.Contains(".ks")) Then
+            Dim i As Integer
+            For i = 0 To ks_perline.Count() - 1
+                savetext.Add(ks_perline(i).texts_dst)
+            Next
+        ElseIf (file_info.Text.Contains(".out.txt")) Then
+            Dim j As Integer
+            For i = 0 To bgi_perline.Count() - 1
+                savetext.Add(String.Format("{0}{1}", bgi_perline(i).text_address, bgi_perline(i).texts_dst))
+            Next
+        End If
+        Dim status As String = Await loadsave.save_ksasync(savetext)
         Dim result As New ContentDialog() With
             {
             .Title = "结果",
@@ -188,8 +226,16 @@ Public NotInheritable Class Edit_ks
             If large_view.Visibility = Visibility.Visible Then
                 While True
                     text_list.SelectedIndex = text_list.SelectedIndex + 1
-                    If TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex = text_list.Items.Count - 1 Then
-                        Exit While
+                    If (file_info.Text.Contains(".ks")) Then
+                        If TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse TryCast(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex = text_list.Items.Count - 1 Then
+                            Exit While
+                        End If
+                    ElseIf (file_info.Text.Contains("out.txt")) Then
+                        If TryCast(text_list.SelectedItem, kag_tools_shared.bgi_perlines).texttype = "t" OrElse text_list.SelectedIndex = text_list.Items.Count - 1 Then
+                            Exit While
+                        End If
+                    Else
+                        Exit while
                     End If
                 End While
                 If text_list.SelectedIndex >= text_list.Items.Count - 1 Then
@@ -199,7 +245,15 @@ Public NotInheritable Class Edit_ks
             Else
                 While True
                     text_list2.SelectedIndex = text_list2.SelectedIndex + 1
-                    If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.Items.Count - 1 Then
+                    If (file_info.Text.Contains(".ks")) Then
+                        If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.Items.Count - 1 Then
+                            Exit While
+                        End If
+                    ElseIf (file_info.Text.Contains(".out.txt")) Then
+                        If CType(text_list2.SelectedItem, kag_tools_shared.bgi_perlines).texttype = "t" OrElse text_list2.Items.Count - 1 Then
+                            Exit While
+                        End If
+                    Else
                         Exit While
                     End If
                 End While
@@ -214,9 +268,17 @@ Public NotInheritable Class Edit_ks
             If large_view.Visibility = Visibility.Visible Then
                 While True
                     text_list.SelectedIndex = text_list.SelectedIndex - 1
-                    If CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex <= 0 Then
+                    If (file_info.Text.Contains(".ks")) Then
+                        If CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list.SelectedIndex <= 0 Then
+                            Exit While
+                        End If
+                    ElseIf (file_info.text.contains(".out.txt")) Then
+                        If CType(text_list.SelectedItem, kag_tools_shared.bgi_perlines).texttype = "t" OrElse text_list.SelectedIndex <= 0 Then
+                            Exit While
+                        End If
+                    Else
                         Exit While
-                    End If
+                    End if
                 End While
                 If text_list.SelectedIndex <= 0 Then
                     bot_p_p.IsEnabled = False
@@ -225,7 +287,15 @@ Public NotInheritable Class Edit_ks
             Else
                 While True
                     text_list2.SelectedIndex = text_list2.SelectedIndex - 1
-                    If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.SelectedIndex <= 0 Then
+                    If (file_info.Text.Contains(".ks")) Then
+                        If CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "t" OrElse CType(text_list2.SelectedItem, kag_tools_shared.ks_perlines).texttype = "s" OrElse text_list2.SelectedIndex <= 0 Then
+                            Exit While
+                        End If
+                    ElseIf (file_info.Text.Contains("out.txt")) Then
+                        If CType(text_list2.SelectedItem, kag_tools_shared.bgi_perlines).texttype = "t" OrElse text_list2.SelectedIndex <= 0 Then
+                            Exit While
+                        End If
+                    Else
                         Exit While
                     End If
                 End While
@@ -305,19 +375,29 @@ Public NotInheritable Class Edit_ks
 
             '根据所选中的控件，对另一个隐藏的空间进行控制
             If CType(sender, ListView).Name = "text_list" AndAlso CType(sender, ListView).SelectedItem IsNot Nothing Then
-                text_src.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
-                text_dst.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
+                If (file_info.Text.Contains(".ks")) Then
+                    text_src.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
+                    text_dst.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
+                ElseIf (file_info.Text.Contains(".out.txt")) Then
+                    text_src.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.bgi_perlines).texts
+                    text_dst.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.bgi_perlines).texts_dst
+                End If
                 text_list2.SelectedIndex = CType(sender, ListView).SelectedIndex
                 texts = text_src.Text
-            ElseIf CType(sender, ListView).Name = "text_list2" AndAlso CType(sender, ListView).Selecteditem IsNot Nothing Then
-                text_src2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
-                text_dst2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
+            ElseIf CType(sender, ListView).Name = "text_list2" AndAlso CType(sender, ListView).SelectedItem IsNot Nothing Then
+                If (file_info.Text.Contains(".ks")) Then
+                    text_src2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts
+                    text_dst2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.ks_perlines).texts_dst
+                ElseIf (file_info.Text.Contains("out.txt")) Then
+                    text_src2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.bgi_perlines).texts
+                    text_dst2.Text = TryCast(TryCast(sender, Windows.UI.Xaml.Controls.Primitives.Selector).SelectedItem, kag_tools_shared.bgi_perlines).texts_dst
+                End If
                 text_list.SelectedIndex = CType(sender, ListView).SelectedIndex
                 texts = text_src2.Text
             End If
 
-            '防止下标越界
-            If CType(sender, ListView).SelectedIndex = 0 Then
+                '防止下标越界
+                If CType(sender, ListView).SelectedIndex = 0 Then
                 bot_p_n.IsEnabled = True
                 bot_p_n2.IsEnabled = True
                 bot_p_p.IsEnabled = False
