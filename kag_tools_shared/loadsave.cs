@@ -18,22 +18,27 @@ namespace kag_tools_shared
         /// </summary>
         /// <param name="perline">传入需要保存的 List</param>
         /// <returns>string result（保存情况）</returns>
-        public async Task<string> save_ksasync(List<ks_perlines> perline)
+        public async Task<string> save_ksasync(List<string> perline)
         {
             FileSavePicker fos = new FileSavePicker();
             fos.FileTypeChoices.Add("KAG Script", new List<string> { ".ks" });
+            fos.FileTypeChoices.Add("BGI Script", new List<string> { ".txt" });
             StorageFile sf = await fos.PickSaveFileAsync();
             if (sf != null)
             {
-                Encoding encoding = Encoding.Unicode;   //默认保存为 UTF-16 LE 编码
+                Encoding encoding=Encoding.UTF8;
+                if (sf.Name.Contains(".ks"))
+                    encoding = Encoding.Unicode;   //默认保存为 UTF-16 LE 编码
+                else if (sf.Name.Contains(".txt"))
+                    encoding = Encoding.UTF8;
                 byte[] datas;
                 string save_file = null;
                 for (int i = 0; i < perline.Count; i++)
                 {
                     if (i == perline.Count - 1)
-                        save_file = save_file + perline[i].texts_dst;
+                        save_file = save_file + perline[i];
                     else
-                        save_file = save_file + perline[i].texts_dst + "\r\n";
+                        save_file = save_file + perline[i] + "\r\n";
                 }
                 datas = encoding.GetBytes(save_file);
                 try

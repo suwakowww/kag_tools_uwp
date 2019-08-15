@@ -229,7 +229,22 @@ namespace kag_tools_ui
         private async void Output_ks_Click(object sender, RoutedEventArgs e)
         {
             loadsave loadsave = new loadsave();
-            string status = await loadsave.save_ksasync(ks_perline);
+            List<string> savetext = new List<string>();
+            if(file_info.Text.Contains(".ks"))
+            {
+                for (int i = 0; i < ks_perline.Count; i++)
+                {
+                    savetext.Add(ks_perline[i].texts_dst);
+                }
+            }
+            else if(file_info.Text.Contains(".out.txt"))
+            {
+                for(int i=0;i<bgi_perline.Count;i++)
+                {
+                    savetext.Add(string.Format("{0}{1}", bgi_perline[i].text_address, bgi_perline[i].texts_dst));
+                }
+            }
+            string status = await loadsave.save_ksasync(savetext);
             ContentDialog result = new ContentDialog()
             {
                 Title = "结果",
